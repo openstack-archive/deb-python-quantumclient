@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "configure" ]
+then
+    addgroup --quiet --system quantum >/dev/null
+    adduser --quiet --system --home /var/lib/quantum --ingroup quantum --no-create-home --shell /bin/bash quantum
+
+    chown quantum:quantum -R /var/lib/quantum /var/log/quantum
+    chmod 0700 /var/log/quantum
+fi
+
+#DEBHELPER#

@@ -1,3 +1,9 @@
+python-quantumclient (2012.1~e3-2) unstable; urgency=low
+
+  * New packages quantum-common
+
+ -- Ghe Rivero <ghe.rivero@stackops.com>  Tue, 31 Jan 2012 08:40:09 +0100
+
 python-quantumclient (2012.1~e3-1) unstable; urgency=low
 
   * Initial release
