@@ -1,6 +1,6 @@
 Source: python-quantumclient
 Section: python
-Priority: extra
+Priority: optional
 Maintainer: PKG OpenStack <openstack-devel@lists.alioth.debian.org>
 Uploaders: Ghe Rivero <ghe.rivero@stackops.com>
 Build-Depends: debhelper (>= 8.0.0),
