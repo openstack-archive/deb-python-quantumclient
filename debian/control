@@ -5,6 +5,7 @@ Maintainer: PKG OpenStack <openstack-devel@lists.alioth.debian.org>
 Uploaders: Ghe Rivero <ghe.rivero@stackops.com>
 Build-Depends: debhelper (>= 8.0.0),
   python-all (>= 2.6.6-3~),
+  python-setuptools
 Standards-Version: 3.9.2
 X-Python-Version: >= 2.6
 Homepage: http://launchpad.net/quantum
