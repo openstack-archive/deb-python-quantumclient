@@ -6,7 +6,7 @@ Uploaders: Ghe Rivero <ghe.rivero@stackops.com>
 Build-Depends: debhelper (>= 8.0.0),
   python-all (>= 2.6.6-3~),
   python-setuptools
-Standards-Version: 3.9.2
+Standards-Version: 3.9.3
 X-Python-Version: >= 2.6
 Homepage: http://launchpad.net/quantum
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=openstack/python-quantumclient.git;a=summary
