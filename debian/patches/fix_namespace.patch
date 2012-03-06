@@ -1,0 +1,8 @@
+--- a/setup.py
++++ b/setup.py
+@@ -96,4 +96,5 @@
+             'quantum = quantum.client.cli:main'
+         ]
+     },
++    namespace_packages=['quantum',],
+ )
