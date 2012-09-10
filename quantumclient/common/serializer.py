@@ -1,9 +1,10 @@
 from xml.dom import minidom
 
-from quantum.common import exceptions as exception
-from quantum.common import utils
+from quantumclient.common import exceptions as exception
+from quantumclient.common import utils
 
 
+# NOTE(maru): this class is duplicated from quantum.wsgi
 class Serializer(object):
     """Serializes and deserializes dictionaries to certain MIME types."""
 
@@ -42,7 +43,7 @@ class Serializer(object):
             return self.get_deserialize_handler(content_type)(datastring)
         except Exception:
             raise exception.MalformedResponseBody(
-                    reason="Unable to deserialize response body")
+                reason="Unable to deserialize response body")
 
     def get_deserialize_handler(self, content_type):
         handlers = {

@@ -15,13 +15,13 @@
 #    under the License.
 
 try:
-    from quantum.vcsversion import version_info
+    from quantumclient.vcsversion import version_info
 except ImportError:
     version_info = {'branch_nick': u'LOCALBRANCH',
                     'revision_id': 'LOCALREVISION',
                     'revno': 0}
 
-QUANTUM_VERSION = ['2012', '1', None]
+QUANTUM_VERSION = ['2012', '2', None]
 YEAR, COUNT, REVSISION = QUANTUM_VERSION
 
 FINAL = True   # This becomes true at Release Candidate time

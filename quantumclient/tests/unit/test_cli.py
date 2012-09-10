@@ -21,18 +21,18 @@
 
 """
 
-
 import logging
 import sys
 import unittest
 
 from quantum import api as server
-from quantum.client import cli_lib as cli
-from quantum.client import Client
 from quantum.db import api as db
-from quantum.tests.unit.client_tools import stubs as client_stubs
+from quantumclient import cli_lib as cli
+from quantumclient import Client
+from quantumclient.tests.unit import stubs as client_stubs
 
-LOG = logging.getLogger('quantum.tests.test_cli')
+
+LOG = logging.getLogger('quantumclient.tests.test_cli')
 API_VERSION = "1.1"
 FORMAT = 'json'
 
@@ -42,8 +42,8 @@ class CLITest(unittest.TestCase):
     def setUp(self):
         """Prepare the test environment"""
         options = {}
-        options['plugin_provider'] = \
-          'quantum.plugins.sample.SamplePlugin.FakePlugin'
+        options['plugin_provider'] = (
+            'quantum.plugins.sample.SamplePlugin.FakePlugin')
         #TODO: make the version of the API router configurable
         self.api = server.APIRouterV11(options)
 
@@ -159,17 +159,25 @@ class CLITest(unittest.TestCase):
                        'op-status': nw.op_status}
             port_list = db.port_list(nw.uuid)
             if not port_list:
-                network['ports'] = [{'id': '<none>',
-                                     'state': '<none>',
-                                     'attachment': {'id': '<none>'}}]
+                network['ports'] = [
+                    {
+                        'id': '<none>',
+                        'state': '<none>',
+                        'attachment': {
+                            'id': '<none>',
+                            },
+                        },
+                    ]
             else:
                 network['ports'] = []
                 for port in port_list:
-                    network['ports'].append({'id': port.uuid,
-                                             'state': port.state,
-                                             'attachment': {'id':
-                                                            port.interface_id
-                                                            or '<none>'}})
+                    network['ports'].append({
+                        'id': port.uuid,
+                        'state': port.state,
+                        'attachment': {
+                            'id': port.interface_id or '<none>',
+                            },
+                        })
 
             # Fill CLI template
             output = cli.prepare_output('show_net_detail',

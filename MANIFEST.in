@@ -1,6 +1,6 @@
 include tox.ini
-include LICENSE README
+include LICENSE README HACKING.rst
 include version.py
 include tools/*
-include quantum/client/tests/*
-include quantum/client/tests/unit/*
+include quantumclient/tests/*
+include quantumclient/tests/unit/*
