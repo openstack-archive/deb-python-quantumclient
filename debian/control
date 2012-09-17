@@ -4,11 +4,18 @@ Priority: optional
 Maintainer: PKG OpenStack <openstack-devel@lists.alioth.debian.org>
 Uploaders: Ghe Rivero <ghe.rivero@stackops.com>
 Build-Depends: debhelper (>= 8.0.0),
-  python-all (>= 2.6.6-3~),
-  python-setuptools
+ pep8,
+ python-all (>= 2.6.6-3~),
+ python-cliff,
+ python-httplib2,
+ python-mox,
+ python-nose,
+ python-prettytable,
+ python-simplejson,
+ python-quantum
 Standards-Version: 3.9.3
 X-Python-Version: >= 2.6
-Homepage: http://launchpad.net/quantum
+Homepage: http://launchpad.net/python-quantumclient
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=openstack/python-quantumclient.git;a=summary
 Vcs-Git: git://anonscm.debian.org/openstack/python-quantumclient.git
 
@@ -16,7 +23,12 @@ Package: python-quantumclient
 Architecture: all
 Section: python
 Replaces: quantum-client
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends},
+ python-cliff,
+ python-httplib2,
+ python-prettytable,
+ python-pyparsing,
+ python-simplejson
 Description: client API library for Quantum
  Quantum provides an API to dynamically request and configure virtual networks.
  These networks connect "interfaces" from other OpenStack services (e.g., vNICs
