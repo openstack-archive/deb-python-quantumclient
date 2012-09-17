@@ -7,6 +7,7 @@
 %:
 	dh $@ --with python2
 
-override_dh_auto_clean:
-
-override_dh_auto_build:
+ifeq (,$(findstring nocheck, $(DEB_BUILD_OPTIONS)))
+override_dh_auto_test:
+	nosetests
+endif
