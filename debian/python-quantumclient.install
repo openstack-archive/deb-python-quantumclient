@@ -1,3 +1,0 @@
-usr/bin/quantum
-usr/lib/python*/dist-packages/quantum/client/*
-usr/lib/python*/dist-packages/python_quantumclient-*.egg-info
