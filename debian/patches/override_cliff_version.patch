@@ -1,0 +1,10 @@
+Index: python-quantumclient-2.0.21/tools/pip-requires
+===================================================================
+--- python-quantumclient-2.0.21.orig/tools/pip-requires	2012-09-11 12:22:43.000000000 -0700
++++ python-quantumclient-2.0.21/tools/pip-requires	2012-09-11 12:23:53.652044719 -0700
+@@ -1,4 +1,4 @@
+-cliff>=1.2.1
++cliff
+ argparse
+ httplib2
+ prettytable>=0.6.0
