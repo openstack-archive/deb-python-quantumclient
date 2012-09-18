@@ -11,3 +11,7 @@ ifeq (,$(findstring nocheck, $(DEB_BUILD_OPTIONS)))
 override_dh_auto_test:
 	nosetests
 endif
+
+override_dh_auto_clean:
+	dh_auto_clean
+	rm -f quantumclient/versioninfo
