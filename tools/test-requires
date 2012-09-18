@@ -1,11 +1,11 @@
 distribute>=0.6.24
-
+cliff-tablib>=1.0
 mox
 nose
 nose-exclude
 nosexcover
 openstack.nose_plugin
-pep8==0.6.1
+nosehtmloutput
+pep8
 sphinx>=1.1.2
 
--e git+https://review.openstack.org/p/openstack/quantum#egg=quantum-dev

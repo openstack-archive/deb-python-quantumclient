@@ -15,28 +15,25 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-try:
-    from setuptools import setup, find_packages
-except ImportError:
-    from ez_setup import use_setuptools
-    use_setuptools()
-    from setuptools import setup, find_packages
+import os
+import sys
+import setuptools
 
-import version
+from quantumclient.openstack.common import setup
 
 Name = 'python-quantumclient'
 Url = "https://launchpad.net/quantum"
-Version = version.canonical_version_string()
+Version = setup.get_post_version('quantumclient')
 License = 'Apache License 2.0'
-Author = 'Netstack'
-AuthorEmail = 'netstack@lists.launchpad.net'
+Author = 'OpenStack Quantum Project'
+AuthorEmail = 'openstack-dev@lists.launchpad.net'
 Maintainer = ''
-Summary = 'Client functionalities for Quantum'
+Summary = 'CLI and python client library for OpenStack Quantum'
 ShortDescription = Summary
 Description = Summary
 
-requires = [
-]
+dependency_links = setup.parse_dependency_links()
+tests_require = setup.parse_requirements(['tools/test-requires'])
 
 EagerResources = [
 ]
@@ -48,7 +45,7 @@ PackageData = {
 }
 
 
-setup(
+setuptools.setup(
     name=Name,
     version=Version,
     url=Url,
@@ -58,14 +55,17 @@ setup(
     long_description=Description,
     license=License,
     scripts=ProjectScripts,
-    install_requires=requires,
+    dependency_links=dependency_links,
+    install_requires=setup.parse_requirements(),
+    tests_require=tests_require,
+    cmdclass=setup.get_cmdclass(),
     include_package_data=False,
-    packages=["quantumclient", "quantumclient.common"],
+    packages=setuptools.find_packages('.'),
     package_data=PackageData,
     eager_resources=EagerResources,
     entry_points={
         'console_scripts': [
-            'quantum = quantumclient.cli:main'
+            'quantum = quantumclient.shell:main',
         ]
     },
 )

@@ -1,7 +1,5 @@
-# vim: tabstop=4 shiftwidth=4 softtabstop=4
-
-# Copyright 2011 Citrix Systems
-# All Rights Reserved.
+# Copyright 2012 OpenStack LLC.
+# All Rights Reserved
 #
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
 #    not use this file except in compliance with the License. You may obtain
@@ -14,10 +12,30 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
-#    @author: Tyler Smith, Cisco Systems
+#
+# vim: tabstop=4 shiftwidth=4 softtabstop=4
 
-import gettext
+"""
+OpenStack base command
+"""
+
+from cliff.command import Command
 
 
-# gettext must be initialized before any quantumclient imports
-gettext.install('quantumclient', unicode=1)
+class OpenStackCommand(Command):
+    """Base class for OpenStack commands
+    """
+
+    api = None
+
+    def run(self, parsed_args):
+        if not self.api:
+            return
+        else:
+            return super(OpenStackCommand, self).run(parsed_args)
+
+    def get_data(self, parsed_args):
+        pass
+
+    def take_action(self, parsed_args):
+        return self.get_data(parsed_args)
