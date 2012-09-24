@@ -1,6 +1,7 @@
-python-quantumclient (2012.2~f1+git1-bc7ba5-1) experimental; urgency=low
+python-quantumclient (1:2.1-1) experimental; urgency=low
 
   * New snapshot version
+  * Change epoch to match the new upstream version convention
 
  -- Mehdi Abaakouk <sileht@sileht.net>  Mon, 10 Sep 2012 18:15:40 +0200
 
