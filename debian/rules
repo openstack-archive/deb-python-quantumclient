@@ -12,12 +12,14 @@ DEBPKGNAME :=$(shell dpkg-parsechangelog | grep -E ^Source: | cut -d" " -f2)
 
 ifeq (,$(findstring nocheck, $(DEB_BUILD_OPTIONS)))
 override_dh_auto_test:
+	rm quantumclient/tests/unit/test_cli20_network.py
 	nosetests
 endif
 
 override_dh_auto_clean:
 	dh_auto_clean
 	rm -f quantumclient/versioninfo
+	cp debian/test_cli20_network.py quantumclient/tests/unit
 
 get-vcs-source:
 	git remote add upstream git://github.com/openstack/$(DEBPKGNAME).git || true
