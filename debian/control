@@ -12,8 +12,7 @@ Build-Depends: debhelper (>= 8.0.0),
  python-mox,
  python-nose,
  python-prettytable,
- python-simplejson,
- python-quantum
+ python-simplejson
 Standards-Version: 3.9.3
 X-Python-Version: >= 2.6
 Homepage: http://launchpad.net/python-quantumclient
