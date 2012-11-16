@@ -19,7 +19,6 @@ Build-Depends-Indep: openstack-pkg-tools,
  python-prettytable,
  python-simplejson
 Standards-Version: 3.9.3
-X-Python-Version: >= 2.6
 Homepage: http://launchpad.net/python-quantumclient
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=openstack/python-quantumclient.git;a=summary
 Vcs-Git: git://anonscm.debian.org/openstack/python-quantumclient.git
