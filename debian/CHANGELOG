@@ -1,0 +1,864 @@
+commit bc7ba5e19d4e9039146ca37f77a0b232522cddc8
+Merge: 2a45b70 d221494
+Author: Jenkins <jenkins@review.openstack.org>
+Date:   Sat Sep 15 02:30:30 2012 +0000
+
+    Merge "fix a minor comment error"
+
+commit d2214940872d7a4096e3eafed60da96405273303
+Author: Jiajun Liu <iamljj@gmail.com>
+Date:   Thu Sep 13 17:52:15 2012 +0800
+
+    fix a minor comment error
+    
+    Change-Id: I8df6f16acf20d54290dc9687005571fb06aa7c00
+
+commit 2a45b707bd0f8b44149ba12f4473f0e5df7db364
+Author: gongysh <gongysh@cn.ibm.com>
+Date:   Wed Sep 12 10:33:38 2012 +0800
+
+    Add document for using quantum client by python or cli invocation.
+    
+    After this patch, we should see output at
+    http://docs.openstack.org/developer/python-quantumclient/.
+    
+    Change-Id: I908c0d0e7f80a6eb73e97ee30eaab1bfbfec1e61
+
+commit f0a9235586897740e829154dfeac743eae001843
+Author: Salvatore Orlando <salv.orlando@gmail.com>
+Date:   Tue Sep 11 15:17:44 2012 -0700
+
+    Support shared option in CLI
+    
+    Fix bug 1049386
+    
+    Add the 'shared' attribute to known parameters
+    
+    Change-Id: Ica3b00c6b4108a328748025f94ceebf8c935e662
+
+commit 95c4fee38cf9eb33252a170c1f54c8272b96e82e
+Author: Gary Kotton <gkotton@redhat.com>
+Date:   Sat Sep 8 03:57:01 2012 -0400
+
+    Limit list command for router and floating ip
+    
+    Fixes bug 1047751
+    
+    Also removes tenant id from network list output
+    
+    Change-Id: I5302b97ed784580508d2ca2170ab3c240053c1a1
+
+commit 59323edf4e75920428bec89fa62c70591f557dd8
+Merge: 75fcafb 2dd9799
+Author: Jenkins <jenkins@review.openstack.org>
+Date:   Mon Sep 10 23:09:22 2012 +0000
+
+    Merge "Send all options with CreateFloatingIP"
+
+commit 75fcafbbc6872be61dab3cbdd3c9f63dec3cf09c
+Author: Dan Wendlandt <dan@nicira.com>
+Date:   Sun Sep 9 09:14:33 2012 -0700
+
+    prevent floatingip-show and floatingip-delete from querying by "name"
+    
+    bug 1048088
+    
+    floating IPs do not have names, but the show and delete commands
+    inherited logic that implied that they did, leading to very odd results
+    that would result is "floating-ip show X" return a result even if X
+    was not a valid UUID for any floating IP.
+    
+    Change-Id: I5939a2a28ae4abf94d44fadb75a657fe706f1295
+
+commit 2dd97991dff0831689fdad29d2ff2b942bf75ae9
+Author: Salvatore Orlando <salv.orlando@gmail.com>
+Date:   Sat Sep 8 18:11:14 2012 -0700
+
+    Send all options with CreateFloatingIP
+    
+    Fix Bug 1048081
+    
+    Change-Id: I87a66e80a42304508e3e9bc3afbe275b41918404
+
+commit 99d7d7000da385aec82a900ed180014402f783d6
+Author: Akihiro MOTOKI <motoki@da.jp.nec.com>
+Date:   Thu Sep 6 23:20:19 2012 +0900
+
+    router/floating commands support resource reference by name
+    
+    Fixes bug 1046855.
+    
+    Change-Id: I7cc578246019a895c020e822e2d636625363fdde
+
+commit 010e71512a155fe60760a32c63786de8139a6c5e
+Author: Dan Wendlandt <dan@nicira.com>
+Date:   Tue Sep 4 21:15:34 2012 -0700
+
+    update error message to make clear that we were search for a name.
+    
+    Change-Id: I0abce71fbb8964d7dee74a904167db76c9f65e67
+
+commit 62f508939e367733552570cc3bac15b82436b981
+Author: yong sheng gong <gongysh@cn.ibm.com>
+Date:   Sat Sep 1 11:38:45 2012 +0800
+
+    *-list command shows only limited fields normally.
+    
+    Bug #1036051
+    
+    We add list_columns in list commands to limit the output columns.
+    The behaviour is overriden if we use -c in command.
+    
+    Change-Id: I0fa6c73cd7270d86aff01d3790d59c8d4e8a235a
+
+commit 5e2f6fd375ddfab0898d62ba88ce7a7951d6f17e
+Author: Gary Kotton <gkotton@redhat.com>
+Date:   Wed Aug 29 03:56:12 2012 -0400
+
+    Fix printout of dns name servers and host routes
+    
+    Fixes bug 1043105
+    
+    Change-Id: I20e9310088767a57f078554025728ae2eb1953e2
+
+commit 5f211956f129e54a3209ae7bc71e700db04ab108
+Author: Dean Troyer <dtroyer@gmail.com>
+Date:   Thu Aug 23 13:09:54 2012 -0500
+
+    Change '_' to '-' in options
+    
+    This changes every command-line option with a '_' in its name
+    and changes them to '-'.  The old option names are maintained
+    for backward compatibility but are no longer in the help text.
+    
+    BP command-options
+    
+    Change-Id: I94daea544ab613321c0a1c4de45092be6dc8471d
+
+commit c9316cabae51f9819be6290b9217d5b2b759733f
+Merge: fae27b8 38abece
+Author: Jenkins <jenkins@review.openstack.org>
+Date:   Thu Aug 23 12:04:50 2012 +0000
+
+    Merge "initial client + CLI support for routers + floating ips"
+
+commit fae27b8ee92929dbb39d27a20c318d8a439f85eb
+Merge: 54fae9e 7a57be1
+Author: Jenkins <jenkins@review.openstack.org>
+Date:   Thu Aug 23 10:08:31 2012 +0000
+
+    Merge "Add nosehtmloutput as a test dependency."
+
+commit 54fae9e37f6247cfce63da98a5311426faca95a0
+Merge: f574f77 9d4f8fe
+Author: Jenkins <jenkins@review.openstack.org>
+Date:   Thu Aug 23 01:13:48 2012 +0000
+
+    Merge "Fix warning when creating the sdist package."
+
+commit 38abece8a6a82c722b00d8ea46997aacecb463a5
+Author: Dan Wendlandt <dan@nicira.com>
+Date:   Tue Aug 21 01:54:17 2012 -0700
+
+    initial client + CLI support for routers + floating ips
+    
+    bp quantum-client-l3-floating-ip
+    
+    The task also does the following:
+    1. Fixes alignment of the --help output
+    2. Ensures that a show command prints a dictionary correctly
+    
+    Change-Id: Ib61b3e8748a7bd476ec008ab6ce20ab852e92f58
+
+commit 7a57be1d2763eeb0ec9dd86e2930e7f05559f43e
+Author: Clark Boylan <clark.boylan@gmail.com>
+Date:   Tue Aug 21 14:38:53 2012 -0700
+
+    Add nosehtmloutput as a test dependency.
+    
+    Adding nosehtmloutput as a test dependency allows nose to output its
+    results to an html file. This will be used by Jenkins to save logs on
+    a different server.
+    
+    Change-Id: I378954997a5d893ac1156c2ae254532c617f78c7
+
+commit f574f77731ed3ee2123c2b8f8572c50e30810c43
+Author: Akihiro MOTOKI <motoki@da.jp.nec.com>
+Date:   Sun Aug 19 16:50:48 2012 +0900
+
+    Add install_requires in setuptools.setup().
+    
+    Fixes bug 1038587
+    
+    Change-Id: I173cfd3ac8e53f6fb9ce58f30cc40afc9936165d
+
+commit 9d4f8fe13c768f94a886713a2d65ca5b7b276e53
+Author: Bhuvan Arumugam <bhuvan@apache.org>
+Date:   Fri Aug 17 22:07:45 2012 -0700
+
+    Fix warning when creating the sdist package.
+    
+    Bug: 1037334
+    
+    * MANIFEST.in
+      version.py not exists.
+    
+    Change-Id: Id5eb6a5f5f48827bf053f7d18694eeca38f20a32
+
+commit fa84c933b4afdb8b2683e17c86536ded08e5cb94
+Merge: f182c58 fdc12bd
+Author: Jenkins <jenkins@review.openstack.org>
+Date:   Tue Aug 14 16:29:16 2012 +0000
+
+    Merge "add ext list and show commands."
+
+commit f182c58e448c9ef9fcd645a4e36407c050e84556
+Author: Nachi Ueno <nachi@nttmcl.com>
+Date:   Tue Aug 14 02:58:41 2012 +0000
+
+    Support --no-gateway option
+    
+    if --no-gateway is specified, null is used for gateway value.
+    Fixs bug 1035987
+    
+    Change-Id: I6b9e00563cc2993f40de204e2c399218f00b88c4
+
+commit b2b1272171acb27479d687c39d38b2f8634f088f
+Merge: 67fbdea 4b12a72
+Author: Jenkins <jenkins@review.openstack.org>
+Date:   Tue Aug 14 05:23:29 2012 +0000
+
+    Merge "Refreshes keystone token if a token is expired."
+
+commit 67fbdeaee961f6034180d4a53dbf8e36132291b8
+Merge: f29ad11 22012a2
+Author: Jenkins <jenkins@review.openstack.org>
+Date:   Mon Aug 13 05:54:45 2012 +0000
+
+    Merge "update mailing list, etc in setup.py"
+
+commit f29ad11c2fc377835e4509cb060d079bc186ada5
+Merge: 7518f77 a369457
+Author: Jenkins <jenkins@review.openstack.org>
+Date:   Mon Aug 13 05:53:03 2012 +0000
+
+    Merge "remove cli.app in quantum client error message."
+
+commit 7518f770cf39486062d252a79f0332e95ab2081a
+Merge: 95639d4 466e704
+Author: Jenkins <jenkins@review.openstack.org>
+Date:   Mon Aug 13 05:50:05 2012 +0000
+
+    Merge "add pyparsing to pip-requires"
+
+commit 95639d4e734de11d49b8fb8f299979fa79df83bc
+Merge: 47f827d 060057c
+Author: Jenkins <jenkins@review.openstack.org>
+Date:   Sun Aug 12 21:30:58 2012 +0000
+
+    Merge "deal with -c option when the list result is empty."
+
+commit 466e704bfecb3b0797c2c0554b68d671f35a35e1
+Author: Dan Wendlandt <dan@nicira.com>
+Date:   Sun Aug 12 13:39:22 2012 -0700
+
+    add pyparsing to pip-requires
+    
+    bug 1035953
+    
+    Change-Id: Ie18fa78f242920e1acfdf1af15232591908c8de8
+
+commit 47f827d8a5a0a14c54e72f0a1c76768e55095964
+Merge: 8f1ce24 80e89c9
+Author: Jenkins <jenkins@review.openstack.org>
+Date:   Sun Aug 12 17:08:58 2012 +0000
+
+    Merge "enable -h | --help after command to show the command usage."
+
+commit fdc12bd65027ecf28a78734b3046f20e5f90893f
+Author: Yong Sheng Gong <gongysh@cn.ibm.com>
+Date:   Sun Aug 12 07:33:10 2012 +0800
+
+    add ext list and show commands.
+    
+    Change-Id: I3bdf1a3b066ee12572468b8d7abee96eb07f9257
+
+commit a3694571078752b74be9aa95a205d53550dbd9cc
+Author: Yong Sheng Gong <gongysh@cn.ibm.com>
+Date:   Sun Aug 12 11:38:58 2012 +0800
+
+    remove cli.app in quantum client error message.
+    
+    blueprint f-3-cli-usability-improvments
+    
+    Change-Id: I3f73f5f0e915ae62e5056abb3f04d7f7f2e68ceb
+
+commit 80e89c929bb5aeddc8a31288ad5f7b749e24e4f5
+Author: Yong Sheng Gong <gongysh@cn.ibm.com>
+Date:   Sun Aug 12 11:16:47 2012 +0800
+
+    enable -h | --help after command to show the command usage.
+    
+    Bug #1023260
+    
+    we caculate the position of -h|--help and command, if -h|--help
+    is after command, we replace the command with 'help' command.
+    Change-Id: Ieb5fc9d37daafd704edb71e35b74dbf83cb69a4c
+
+commit 060057c5840949abcb5eea3b2b424bf4e5c8df5a
+Author: Yong Sheng Gong <gongysh@cn.ibm.com>
+Date:   Sun Aug 12 09:33:40 2012 +0800
+
+    deal with -c option when the list result is empty.
+    
+    bug #1033123
+    
+    Change-Id: Idd10e9ae8fd57e6173ef7f92411176834efebff5
+
+commit 8f1ce248b33fdf8d693ea1cea9e00524b6c54495
+Author: Yong Sheng Gong <gongysh@cn.ibm.com>
+Date:   Sun Jul 29 20:30:32 2012 +0800
+
+    Add quota commands to change quota of a tenant.
+    
+    blueprint quantum-api-quotas
+    
+    quantum quota-show --tenant_id:
+    if tenant_id is not specified, the server will get tenant_id from context
+    quantum quota-update --network <num> --port <num>
+    --subnet <num> --tenant_id <id>:
+    if tenant_id is not specified, the server will get tenant_id from context
+    quantum quota-list:
+    list all tenants' quota values after the updation.
+    quantum quota-delete --tenant_id <id>:
+    delete the given tenant's customized quota values.
+    
+    Change-Id: Ib0efb159bea96837bf4e35eaefa5e172c1c9f34a
+
+commit 4b12a7222628bbbf6a073909d5541dc42df746eb
+Author: Akihiro MOTOKI <motoki@da.jp.nec.com>
+Date:   Sat Aug 11 20:19:41 2012 +0900
+
+    Refreshes keystone token if a token is expired.
+    
+    Fixes bug 1034212
+    
+    Change-Id: I523d289807caff74068328f612451cee74b94cbb
+
+commit 22012a2f34c26a35e3d0fa06874ffa06e55599f3
+Author: Dan Wendlandt <dan@nicira.com>
+Date:   Thu Aug 9 10:02:46 2012 -0700
+
+    update mailing list, etc in setup.py
+    
+    Change-Id: I0f50dd8d2d76b66e39b09d2fe65be66d6d405761
+
+commit defb5481b0e7e2469405de98e6dd49ed239ef986
+Author: Yong Sheng Gong <gongysh@cn.ibm.com>
+Date:   Sun Jul 29 02:56:43 2012 +0800
+
+    Add name or id to quantum cli commands.
+    Bug #1030180
+    
+    We first lookup the resource id via id if it looks like an id.
+    If we cannot find it via id, we will look it up via name.
+    All of the update/show/delete support reference resource via name or id.
+    To create port/subnet, we can refercen network via network's name.
+    Also in port creation, we support reference subnet in fixed_ip via its name.
+    
+    quantum_test.sh is added to test the command lines after running 'python setup.py install'
+    
+    Change-Id: I54b6912e2c4044ba70aaf604cd79520022de262f
+
+commit d16e00a056bbe7ba576c4b7195180bfc383bbfad
+Author: Salvatore Orlando <salv.orlando@gmail.com>
+Date:   Tue Jul 24 23:45:10 2012 -0700
+
+    Allow to retrieve objects by name
+    
+    Fixes bug 979527
+    
+    xxx-show commands now can accept either an id or a name of the resource to
+    retrieve, similarly to the "nova get" command. This has been preferred to
+    using mutually exclusive keyword argument, in order to avoid confusion
+    with other CLI tools.
+    
+    NOTE: the current patch allow search by name only for networks.
+    The restriction will be lifted once name attributes for port and subnets
+    are added.
+    
+    Change-Id: Id186139a01c9f2cfc36ca3405b4024bd7780622e
+
+commit d70620ce9665738965f8d9953ba9c81ec1a4e1c2
+Merge: 7f3e6ee 4631213
+Author: Jenkins <jenkins@review.openstack.org>
+Date:   Sat Jul 14 16:32:54 2012 +0000
+
+    Merge "Use -h, --help to show help messages."
+
+commit 7f3e6eeb7a56d26d786275461293ef48a4727ca8
+Author: Yong Sheng Gong <gongysh@cn.ibm.com>
+Date:   Fri Jul 6 12:22:54 2012 +0800
+
+    Remove quantum client codes for API v1.0
+    Bug #1021546
+    
+    Change-Id: Ic628db01034bc6dfb5fad3d6a2905e243900229a
+
+commit 463121305619a24001ba80be4ed899de148ccb75
+Author: Akihiro MOTOKI <motoki@da.jp.nec.com>
+Date:   Wed Jul 11 14:44:31 2012 +0900
+
+    Use -h, --help to show help messages.
+    
+    Fixes bug 1023260
+    "quantumv2" command used '-H' and '--Help' to show help messages,
+    but it is inconsistent to the convention of option names used in
+    other OpenStack client lib commands. This commit fixes it.
+    
+    Change-Id: I85c1e79c2cd08bcc0112ed2f10ca8210e9384687
+
+commit 42404616f79ff920d40775d6c4d44a4ce4c101c7
+Author: Gary Kotton <gkotton@redhat.com>
+Date:   Sun Jul 8 09:20:04 2012 -0400
+
+    Support allocation pools for subnet
+    
+    Fixes bug 1022227
+    
+    Usage examples:
+    
+    create_subnet --tenant_id <id> --allocation_pool start=1.1.1.1,end=1.1.1.10 <networkid> <gw>
+    
+    More than one allocation pool can be added by doing the following:
+    --allocation_pool start=1.1.1.1,end=1.1.1.10 --allocation_pool start=1.1.1.123,end=1.1.1.125 ...
+    
+    Change-Id: I313625b6a8c1da6eaca8b1943da52738978ed72b
+
+commit 1586c923d9dd0a717df07cc1d729fc45d55d3b06
+Author: Yong Sheng Gong <gongysh@cn.ibm.com>
+Date:   Thu Jul 5 15:01:39 2012 +0800
+
+    Make quantum cli consistent with other cli's practice.
+    
+    Bug 1011759
+    
+    We use dash in command names, underscore in options or arguments,
+    adopt noun-verb format command names.
+    
+    Change-Id: Ibeb2b4a31929dbb7008cec3b04bd77e75d9ace1a
+
+commit d955740671000b2b915c8c6717d12a5e52f3b89e
+Author: Monty Taylor <mordred@inaugust.com>
+Date:   Mon Jun 25 11:35:01 2012 -0500
+
+    Add post-tag versioning.
+    
+    Change-Id: I0667c7b72c36a20827730dd829a12430954b666e
+
+commit 50c46f61d1a76b5429c20ad61203afedc7c508bb
+Author: Yong Sheng Gong <gongysh@cn.ibm.com>
+Date:   Sun Jun 24 16:11:11 2012 +0800
+
+    add --fixed-ip argument to create port
+    
+    add --fixed-ip argument to create port and add list and dict type for unknow option
+    now we can use known option feature:
+     quantumv2 create_port --fixed-ip subnet_id=<id>,ip_address=<ip>
+    --fixed-ip subnet_id=<id>, ip_address=<ip2> network_id
+    or unknown option feature:
+    one ip:
+     quantumv2 create_port network_id --fixed_ips type=dict list=true subnet_id=<id>,ip_address=<ip>
+    two ips:
+    quantumv2 create_port network_id --fixed_ips type=dict subnet_id=<id>,ip_address=<ip> subnet_id=<id>,ip_address=<ip2>
+    to create port
+    Please download: https://review.openstack.org/#/c/8794/4 and
+    set core_plugin = quantum.db.db_base_plugin_v2.QuantumDbPluginV2 on quantum server side
+    
+    Patch 2: support cliff 1.0
+    Patch 3: support specify auth strategy, for now, any other auth strategy than keystone will disable auth,
+    format port output
+    Patch 4: format None as '' when outputing, deal with list of dict, add QUANTUMCLIENT_DEBUG env to enable http req/resp print,
+    which is helpful for testing nova integration
+    Patch 5: fix interactive mode, and initialize_app problem
+    
+    Change-Id: I693848c75055d1947862d55f4b538c1dfb1e86db
+
+commit dd803f8e26f4c3a3b8f1b9e7526d0e1980b2491c
+Author: Yong Sheng Gong <gongysh@cn.ibm.com>
+Date:   Fri May 18 09:02:29 2012 +0800
+
+    add keystone support, new command interface, API v2.0
+    
+    blueprint new-cli
+    Bug #1001053
+    
+    Implement new commands interface, ready for v2.0. adopt cliff arch. new
+    client binary is quantumv2. After it is stable, we will remove quantum
+    binary. Httplibs2 is used.
+    
+    usage: https://docs.google.com/document/d/1e_4UtnhFfgtnsB8EVB31BZKldaVzl_BlsGnGBrKmcDk/edit
+    
+    Patch 2: add license header
+    Patch 3: add v1.0 support, fix show net details
+    Patch 4: quantumclient network api v2.0
+    Patch 5: subnet and port commands for api v2.0, add fields selector
+    Patch 6: add test cases
+    Patch 7: fix interactive mode, modify according to comments and https://review.openstack.org/#/c/8366/, add two tasks to BP: noauth and openstack common
+    Patch 8: fix log problem
+    Patch 9: modify according to the comments by dan on patch 5
+    Patch 10: just trigger jenkins
+    Patch 11: pep 1.3 fix
+    Patch 12: cliff and prettytable to more than 0.6.0
+    Patch 13: change setup.py to include more packages
+    Patch 14: pep check on jenkins
+    Patch 15: add license text to empty __init__.py files
+    Patch 16: fix v1.1 test cases after server changes
+    
+    Change-Id: Ibbbdd834371c6a023b31e4797718fc0fe9786d89
+
+commit f7086ed40a9cf7b978a906179fd9d883c00e5eff
+Author: Monty Taylor <mordred@inaugust.com>
+Date:   Wed Jun 13 16:10:57 2012 -0400
+
+    Add initial docs.
+    
+    Change-Id: I846eec12e800c15a545946604fe77a0a6b83fb46
+
+commit f5035b341009505bf4f24c52a3aae548a6b238ea
+Author: Yong Sheng Gong <gongysh@cn.ibm.com>
+Date:   Thu May 24 14:59:32 2012 +0800
+
+    quit and print usage when unsupported version specified.
+    
+    bug 974835
+    
+    Change-Id: Iddbf72281be0d4dd819b6f51cc7950d90af0dbbc
+
+commit bc2d6a66f0fbcb23b2e9782352b9477a85950ef2
+Author: Yong Sheng Gong <gongysh@cn.ibm.com>
+Date:   Fri May 11 10:18:01 2012 +0800
+
+    Use --debug to enable printing HTTP message(s) between client and
+    server, besides logging verbosely.
+    
+    fix Bug #993859
+    
+    change --verbose into --debug, which is a practice by other clients
+    (nova and glance).
+    note: httplib prints message by print.
+    Patch 2: fix pep8, modify according to some comments
+    Change-Id: Ibc959cca7d89c18b6d5c902f2e98bb856102c51c
+
+commit 1fb4540bfa8abb8fbba710c5037ec31a35884d9f
+Author: Thierry Carrez <thierry@openstack.org>
+Date:   Tue May 22 11:54:39 2012 +0200
+
+    Add HACKING.rst to generated tarballs
+    
+    Add HACKING.rst to MANIFEST.in so that it shows in tarballs.
+    Fixes bug 1002776.
+    
+    Change-Id: I937d0673d23d922137e684217a8c4c75a5424800
+
+commit 878c939e2c6dcbbf4e0792b04a070af90c72fba6
+Author: Monty Taylor <mordred@inaugust.com>
+Date:   Wed May 16 11:42:30 2012 -0400
+
+    Align tox with standards.
+    
+    Moved openstack nose invocation to tox.ini from setup.cfg, as there
+    is no way to turn it off if it's in setup.cfg, and when we're running
+    in jenkins, we want to run via xunit and not via openstack color output.
+    
+    Change-Id: I0a7b6232834b5cdfc97be9c2f93f726d6b47e0ac
+
+commit fa43d08dcb30183b7b0c3a70dbd833893d0e60ce
+Author: Maru Newby <mnewby@internap.com>
+Date:   Fri Apr 13 17:03:05 2012 -0700
+
+    Clean up codebase in accordance with HACKING/PEP8.
+    
+     * Adds HACKING.rst
+     * Addresses 981208
+    
+    Change-Id: I3d701ca9a748a0c4ceada7d76a31dc6bb2d5969b
+
+commit 05c5a2b4a9b0eb9c0bf88cd81390c7bc906bd289
+Author: Maru Newby <mnewby@internap.com>
+Date:   Wed Apr 11 02:20:57 2012 -0700
+
+    Remove server-specific functionality.
+    
+     * Moved server-specific functionality found in quantum.common to
+       the quantum repo.
+     * Renamed primary package from quantum -> quantumclient.
+     * Addresses bug 977711 and bug 921933
+    
+    Change-Id: If34553924c8dfcc6b148c1d91f173a4b81eeb95a
+
+commit 9b09f53a158a6184a560190b0d26293dcc1a44a6
+Author: Dan Wendlandt <dan@nicira.com>
+Date:   Mon Apr 2 10:46:06 2012 -0700
+
+    bug 963155: add some missing test files to the sdist tarball.
+    
+    Change-Id: I78cb561776254e4224eb46e1c06e80e0f2c65d54
+
+commit d0a68cbf92af8bc1a2efc3c50786ff4b04556079
+Author: Dan Wendlandt <dan@nicira.com>
+Date:   Thu Mar 29 15:00:04 2012 -0700
+
+    Fix quantum client exception when server returns 500 error.
+    
+    bug 963494
+    
+    Also, make sure that exceptions within the client are accompanied with
+    a full stack trace, otherwise it is hard to track down where it happened.
+    
+    Change-Id: Ic134ed27523b2c321dcb8e35e6ab0eb144a699f3
+
+commit 063660985783556663288d8822702e1e3bac2662
+Author: Thierry Carrez <thierry@openstack.org>
+Date:   Fri Mar 16 23:16:25 2012 +0100
+
+    Open Folsom
+    
+    Change-Id: I40430a9cf771dd5a4bc8daa0cc37d9e90f35a0ef
+
+commit 36fd3ac6c12b3b786c5a7d8fa958b523a7af111c
+Author: Maru Newby <mnewby@internap.com>
+Date:   Fri Mar 2 15:44:51 2012 -0800
+
+    Add retry support to the quantum client.
+    
+     * Based on the retry support in nova's melange_connection
+       and glance
+     * Retry configuration is defined during Client instantiation and
+       only applied to idempotent GET requests
+     * Updated all api methods to call http method helpers (delete/get/post/put)
+       rather than do_request to ensure consistent behavoir for a given http
+       method.
+     * Fixed bug in quantum.common.exceptions.QuantumClientException that
+       was unnecessarily overriding class's 'message' attribute.
+     * Resolves bug 937379
+    
+    Change-Id: Iab4e2ccf97937502ee0df58dba1e2dca30a36df8
+
+commit 46783f1a825b16b7cddd1d2521b9f0a2a40a9f13
+Merge: 2de3db0 8e5453e
+Author: Jenkins <jenkins@review.openstack.org>
+Date:   Wed Mar 14 05:21:07 2012 +0000
+
+    Merge "Adds client side functions for quantum 'detail' actions."
+
+commit 2de3db094d46912f3b2d44e3cc4a528f51a22394
+Merge: f956a33 f2d9aed
+Author: Jenkins <jenkins@review.openstack.org>
+Date:   Tue Mar 13 19:40:50 2012 +0000
+
+    Merge "Remove generation of quantum/vcsversion.py."
+
+commit f2d9aed529058a3f71854a8c6af533e45b37a94b
+Author: Bob Kukura <rkukura@redhat.com>
+Date:   Tue Mar 13 11:35:01 2012 -0400
+
+    Remove generation of quantum/vcsversion.py.
+    
+    The quantum/vcsversion.py module is generated by the quantum project's
+    setup.py, so python-quantumclient's setup.py should not also generate
+    it. It is not used in python-quantumclient. Fixes bug 944363.
+    
+    Change-Id: Ib7dd646aaa24aefa7f6f28397232f52550705e31
+    Signed-off-by: Bob Kukura <rkukura@redhat.com>
+
+commit f956a335b0fe491b22a0fc2aab9670acce8b0061
+Author: Dan Wendlandt <dan@nicira.com>
+Date:   Tue Mar 6 13:10:17 2012 -0800
+
+    add LICENSE file to sdist tarball
+    
+    bug 944091
+    
+    Change-Id: I5fef616dd52e4263aebadd2051fd18650b275149
+
+commit 8e5453e0ba164f30eec21ddfdad2504b1596fb53
+Author: Madhav Puri <madhav.puri@gmail.com>
+Date:   Sat Feb 25 03:15:55 2012 -0800
+
+    Adds client side functions for quantum 'detail' actions.
+    
+    Fixes bug 834017. This commit:
+    1. Adds library functions to exercise the 'detail' actions
+       for quantum ports and networks.
+    2. Modifies client function 'show_port_details()' to invoke
+       'detail' action. And added 'show_port()' function to do the
+       regular call without 'detail'.
+    3. Adds CLIs to exercise the new client function calls. The CLIs
+       options that end with '_detail' invoke equivalent 'detail' action.
+       Note that with this change the previous CLI 'show_port' shall now
+       show concise info about a port ie. only ID and state, while
+       'show_port_detail' can be used to list the detailed information about
+       a port viz. ID, state and its attachment.
+    4. Modifies OutputTemplate class to add support for templates with 3 or more
+       level attributes (eg. "Port interface: %(port.attachment.id)s) and
+       templates containing list of multilevel-attributes (eg. "Ports:
+       %(network.ports|ID: %(id)s\t\tinterface: %(attachment.id)s)s")
+    5. Added respective unit tests and verified them.
+    
+    Change-Id: I464824abea5ef0c99c466b71c1e883b492d60d62
+
+commit f6d50876985ed9a392fa49dda9c0fc4108a2ac8d
+Author: Salvatore Orlando <salvatore.orlando@eu.citrix.com>
+Date:   Mon Feb 13 14:38:17 2012 +0000
+
+    bp/quantum-client-1.1
+    
+    - Adds supports for 1.1 API
+    - Handles new error codes
+    - Support filters for 1.1 API
+    
+    Addressing Dan's comments
+    
+    Change-Id: I230657de1621ddf08573bbeaceeb26cafbee1a00
+
+commit 880cde716e673a829b6e352116a039588f42d2b9
+Author: Salvatore Orlando <salvatore.orlando@eu.citrix.com>
+Date:   Thu Feb 2 15:01:49 2012 +0000
+
+    Bug 921930
+    remove depedency on webob from python-quantumclient
+    
+    Rebased and repushed after review expired
+    
+    Change-Id: I7dc3840018f3496116d30c2684bc44f64fa2752b
+
+commit 55547ca785587ddc810119f3eb15ff009200fa86
+Merge: 4e4ff9f 43120fd
+Author: Jenkins <jenkins@review.openstack.org>
+Date:   Sun Feb 19 11:11:28 2012 +0000
+
+    Merge "Enable log output to syslog."
+
+commit 4e4ff9f4eacde5fc1e3bdad1bf4933c265d92f46
+Merge: caca89a f0daf3a
+Author: Jenkins <jenkins@review.openstack.org>
+Date:   Sun Feb 19 11:04:51 2012 +0000
+
+    Merge "unexecutable lib files should not contain a shebang"
+
+commit caca89aed092cb1624a0e4d6e0945090746b0d6c
+Author: Salvatore Orlando <salvatore.orlando@eu.citrix.com>
+Date:   Wed Feb 15 22:25:46 2012 +0000
+
+    bug 933125
+    ensure cli.py executes from the shell
+    
+    Change-Id: I48e6478c5c38a76ef44182b741106fb3a69543e9
+
+commit 43120fd8c9a0596317df61f2edbe7053906c8f98
+Author: Thiago Morello <thiago.morello@locaweb.com.br>
+Date:   Wed Feb 1 11:00:44 2012 -0200
+
+    Enable log output to syslog.
+    
+    Change-Id: Ie591600a809215c296ef04b6b9a261a31b20637b
+
+commit 27741e3953cdf88c4dee37307065ca36a04c73c7
+Author: Brad Hall <brad@nicira.com>
+Date:   Thu Jan 26 21:33:44 2012 -0800
+
+    Add "quantum" package so that __init__.py is included
+    
+    Change-Id: I89164fcc18ca953e337c673e8dabc5faed9b725b
+
+commit f0daf3a7831a37c341572cd56570cbfb553b8a02
+Author: Ionuț Arțăriși <iartarisi@suse.cz>
+Date:   Thu Jan 26 15:06:52 2012 +0100
+
+    unexecutable lib files should not contain a shebang
+    
+    Change-Id: Ifec7cb3bcb7f84bf428f2094ad7fa426fbc73006
+
+commit 52662fbb500a08dfdde63d8f1513bc882c3067a1
+Author: Monty Taylor <mordred@inaugust.com>
+Date:   Tue Jan 24 19:11:35 2012 -0800
+
+    Additional small release needs
+    
+    Change the pypi name to match the expected name.
+    Update versions in pip-requires to match other projects.
+    Add coverage support to tox.
+    
+    Change-Id: Id02b039dc8c89bfdae1acc5adea06757cd326bb8
+
+commit e83eee7b11e886861a5f370ddb74bbb4342bf867
+Author: Dan Wendlandt <dan@nicira.com>
+Date:   Tue Jan 24 18:19:02 2012 -0800
+
+    Initial cut at removing unneeded dependencies.
+    
+    Removed deps left-over from quantum-server
+    Also Added 501 exceptions to client package.
+    
+    Change-Id: I4aa45090ce211d29ae97d398572817a68f690122
+
+commit d0dd2ecd635c0eb5fb239645879948f9f498b7b4
+Author: Monty Taylor <mordred@inaugust.com>
+Date:   Tue Jan 24 18:19:02 2012 -0800
+
+    Added 501 exceptions to client package.
+    
+    Change-Id: I129296a2db18d81708cc2766feaa1c5075827817
+
+commit 34e97e4bb2f3fa37b3daf8d02237d7fcf97b8d9c
+Author: Dan Wendlandt <dan@nicira.com>
+Date:   Sun Jan 22 21:33:22 2012 -0800
+
+    move batch_config.py to client library.
+    
+    do not yet add it to console_scripts, as it is more of an internal
+    development tool.  If we want to expose it to users, we would
+    probably incorporate it into the main quantum client, rather than
+    having a separate utility.
+    
+    Change-Id: I3541dd430b931f883f8e18194776972a9cafcc70
+
+commit 689002980c848890ecdeb83e2b3e84daf295881c
+Author: Monty Taylor <mordred@inaugust.com>
+Date:   Wed Jan 18 14:50:04 2012 +1100
+
+    Added README.
+    
+    Change-Id: I03b6161e9d08aeafb71617f5728e7a4b27f40ef1
+
+commit c6dc09540937581c0f93ab092dea1c6fb81cf456
+Author: Monty Taylor <mordred@inaugust.com>
+Date:   Wed Jan 18 10:27:11 2012 +1100
+
+    Prepare for Jenkins gating job.
+    
+    Change-Id: Iaf99816c65753105f76057a066573570d86dbd9c
+
+commit 5082b6181dc0f199f3fc7527d6ae2ada16905779
+Author: Monty Taylor <mordred@inaugust.com>
+Date:   Tue Jan 10 17:37:11 2012 -0800
+
+    Split quantumclient out.
+
+commit a63b971306633f0aa0374dba78bad5523b886fe0
+Author: Brad Hall <brad@nicira.com>
+Date:   Wed Nov 9 22:57:13 2011 -0800
+
+    Second round of packaging changes
+    
+    This change condenses the directory structure to something more similar to
+    what we had before while producing similar packages.
+    
+    It also introduces version.py which allows us to get the version from git tags
+    (or a fallback version if not available).
+    
+    Fixes lp bug 889336
+    Fixes lp bug 888795
+    
+    Change-Id: I86136bd9dbabb5eb1f8366ed665ed9b54f695124
