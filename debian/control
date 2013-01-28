@@ -24,7 +24,6 @@ Vcs-Git: git://anonscm.debian.org/openstack/python-quantumclient.git
 
 Package: python-quantumclient
 Architecture: all
-Section: python
 Replaces: quantum-client
 Pre-Depends: dpkg (>= 1.15.6~)
 Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends},
