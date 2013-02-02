@@ -13,6 +13,7 @@ python-quantumclient (1:2.1-1) experimental; urgency=low
   * Added VCS fields.
   * Added debian/gbp.conf.
   * Updated debian/copyright.
+  * Added a watch file.
 
  -- Thomas Goirand <zigo@debian.org>  Sat, 02 Feb 2013 04:57:46 +0000
 

@@ -1,3 +1,7 @@
+Description: Changes pip-requires for cliff (remove cliff version)
+Author: Mehdi Abaakouk <sileht@sileht.net>
+Forwarded: not-needed
+
 Index: python-quantumclient-2.0.21/tools/pip-requires
 ===================================================================
 --- python-quantumclient-2.0.21.orig/tools/pip-requires	2012-09-11 12:22:43.000000000 -0700
