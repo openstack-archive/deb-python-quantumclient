@@ -10,13 +10,15 @@ Uploaders: Julien Danjou <acid@debian.org>,
 Build-Depends: debhelper (>= 9),
  python-all (>= 2.6.6-3~), openstack-pkg-tools
 Build-Depends-Indep: pep8,
+ cliff-tablib,
  python-argparse,
  python-cliff,
  python-httplib2,
  python-mox,
  python-nose,
  python-prettytable,
- python-simplejson
+ python-simplejson,
+ python-pyparsing,
 Standards-Version: 3.9.3
 Homepage: http://launchpad.net/python-quantumclient
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=openstack/python-quantumclient.git;a=summary
