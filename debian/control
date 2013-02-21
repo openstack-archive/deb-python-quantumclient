@@ -8,15 +8,17 @@ Uploaders: Julien Danjou <acid@debian.org>,
            Mehdi Abaakouk <sileht@sileht.net>,
            Thomas Goirand <zigo@debian.org>
 Build-Depends: debhelper (>= 9),
- python-all (>= 2.6.6-3~),
-Build-Depends-Indep: openstack-pkg-tools,
- pep8,
+ python-all (>= 2.6.6-3~), openstack-pkg-tools
+Build-Depends-Indep: pep8,
+ cliff-tablib,
+ python-argparse,
  python-cliff,
  python-httplib2,
  python-mox,
  python-nose,
  python-prettytable,
- python-simplejson
+ python-simplejson,
+ python-pyparsing,
 Standards-Version: 3.9.3
 Homepage: http://launchpad.net/python-quantumclient
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=openstack/python-quantumclient.git;a=summary
@@ -27,6 +29,7 @@ Architecture: all
 Replaces: quantum-client
 Pre-Depends: dpkg (>= 1.15.6~)
 Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends},
+ python-argparse,
  python-cliff,
  python-httplib2,
  python-prettytable,
@@ -39,4 +42,3 @@ Description: client API library for Quantum
  capabilities (e.g., QoS, ACLs, network monitoring, etc).
  .
  This package provides the client agent.
-

@@ -7,10 +7,22 @@ python-quantumclient (1:3.0.a1-2) experimental; urgency=low
 
 python-quantumclient (1:2.1-1) experimental; urgency=low
 
-  * New snapshot version
-  * Change epoch to match the new upstream version convention
+  * New upstream release.
+  * Change epoch to match the new upstream version convention.
+  * Removed duplicate Section: field.
+  * Now using openstack-pkg-tools.
+  * Bumped to debhelper >= 9 and compat to 9.
+  * Added lots of missing (build-)depends.
+  * Pre-Depends: dpkg (>= 1.15.6~) because of xz compression.
+  * Added more uploaders (team maintenance).
+  * Removed useless X-Python-Version: >= 2.6.
+  * Disable test_cli20_network.py unit test.
+  * Added VCS fields.
+  * Added debian/gbp.conf.
+  * Updated debian/copyright.
+  * Added a watch file.
 
- -- Mehdi Abaakouk <sileht@sileht.net>  Mon, 10 Sep 2012 18:15:40 +0200
+ -- Thomas Goirand <zigo@debian.org>  Sat, 02 Feb 2013 04:57:46 +0000
 
 python-quantumclient (2012.1-1) unstable; urgency=low
 
