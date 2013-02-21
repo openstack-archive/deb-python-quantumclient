@@ -2,6 +2,7 @@ python-quantumclient (1:3.0.a1-2) experimental; urgency=low
 
   * New upstream release.
   * Installs the bash completion script.
+  * Removes not needed patches.
 
  -- Thomas Goirand <zigo@debian.org>  Thu, 21 Feb 2013 22:57:58 +0800
 
