@@ -77,11 +77,17 @@ def add_show_list_common_argument(parser):
         action='store_true',
         help=argparse.SUPPRESS)
     parser.add_argument(
-        '-F', '--fields',
+        '--fields',
+        help=argparse.SUPPRESS,
+        action='append',
+        default=[])
+    parser.add_argument(
+        '-F', '--field',
+        dest='fields', metavar='FIELD',
         help='specify the field(s) to be returned by server,'
         ' can be repeated',
         action='append',
-        default=[], )
+        default=[])
 
 
 def add_extra_argument(parser, name, _help):
@@ -108,15 +114,16 @@ def parse_args_to_dict(values_specs):
 
     '''
     # -- is a pseudo argument
-    if values_specs and values_specs[0] == '--':
-        del values_specs[0]
+    values_specs_copy = values_specs[:]
+    if values_specs_copy and values_specs_copy[0] == '--':
+        del values_specs_copy[0]
     _options = {}
     current_arg = None
     _values_specs = []
     _value_number = 0
     _list_flag = False
     current_item = None
-    for _item in values_specs:
+    for _item in values_specs_copy:
         if _item.startswith('--'):
             if current_arg is not None:
                 if _value_number > 1 or _list_flag:
@@ -134,7 +141,10 @@ def parse_args_to_dict(values_specs):
             current_arg = _options[_item]
             _item = _temp
         elif _item.startswith('type='):
-            if current_arg is not None:
+            if current_arg is None:
+                raise exceptions.CommandError(
+                    "invalid values_specs %s" % ' '.join(values_specs))
+            if 'type' not in current_arg:
                 _type_str = _item.split('=', 2)[1]
                 current_arg.update({'type': eval(_type_str)})
                 if _type_str == 'bool':
@@ -142,9 +152,6 @@ def parse_args_to_dict(values_specs):
                 elif _type_str == 'dict':
                     current_arg.update({'type': utils.str2dict})
                 continue
-            else:
-                raise exceptions.CommandError(
-                    "invalid values_specs %s" % ' '.join(values_specs))
         elif _item == 'list=true':
             _list_flag = True
             continue
@@ -166,22 +173,55 @@ def parse_args_to_dict(values_specs):
             current_arg.update({'nargs': '+'})
         elif _value_number == 0:
             current_arg.update({'action': 'store_true'})
-    _parser = argparse.ArgumentParser(add_help=False)
-    for opt, optspec in _options.iteritems():
-        _parser.add_argument(opt, **optspec)
-    _args = _parser.parse_args(_values_specs)
+    _args = None
+    if _values_specs:
+        _parser = argparse.ArgumentParser(add_help=False)
+        for opt, optspec in _options.iteritems():
+            _parser.add_argument(opt, **optspec)
+        _args = _parser.parse_args(_values_specs)
     result_dict = {}
-    for opt in _options.iterkeys():
-        _opt = opt.split('--', 2)[1]
-        _value = getattr(_args, _opt.replace('-', '_'))
-        if _value is not None:
-            result_dict.update({_opt: _value})
+    if _args:
+        for opt in _options.iterkeys():
+            _opt = opt.split('--', 2)[1]
+            _opt = _opt.replace('-', '_')
+            _value = getattr(_args, _opt)
+            if _value is not None:
+                result_dict.update({_opt: _value})
     return result_dict
+
+
+def _merge_args(qCmd, parsed_args, _extra_values, value_specs):
+    """Merge arguments from _extra_values into parsed_args.
+
+    If an argument value are provided in both and it is a list,
+    the values in _extra_values will be merged into parsed_args.
+
+    @param parsed_args: the parsed args from known options
+    @param _extra_values: the other parsed arguments in unknown parts
+    @param values_specs: the unparsed unknown parts
+    """
+    temp_values = _extra_values.copy()
+    for key, value in temp_values.iteritems():
+        if hasattr(parsed_args, key):
+            arg_value = getattr(parsed_args, key)
+            if arg_value is not None and value is not None:
+                if isinstance(arg_value, list):
+                    if value and isinstance(value, list):
+                        if type(arg_value[0]) == type(value[0]):
+                            arg_value.extend(value)
+                            _extra_values.pop(key)
+
+
+def update_dict(obj, dict, attributes):
+    for attribute in attributes:
+        if hasattr(obj, attribute) and getattr(obj, attribute):
+            dict[attribute] = getattr(obj, attribute)
 
 
 class QuantumCommand(command.OpenStackCommand):
     api = 'network'
     log = logging.getLogger(__name__ + '.QuantumCommand')
+    values_specs = []
 
     def get_client(self):
         return self.app.client_manager.quantum
@@ -200,6 +240,26 @@ class QuantumCommand(command.OpenStackCommand):
 
         return parser
 
+    def format_output_data(self, data):
+        # Modify data to make it more readable
+        if self.resource in data:
+            for k, v in data[self.resource].iteritems():
+                if isinstance(v, list):
+                    value = '\n'.join(utils.dumps(i) if isinstance(i, dict)
+                                      else str(i) for i in v)
+                    data[self.resource][k] = value
+                elif isinstance(v, dict):
+                    value = utils.dumps(v)
+                    data[self.resource][k] = value
+                elif v is None:
+                    data[self.resource][k] = ''
+
+    def add_known_arguments(self, parser):
+        pass
+
+    def args2body(self, parsed_args):
+        return {}
+
 
 class CreateCommand(QuantumCommand, show.ShowOne):
     """Create a resource for a given tenant
@@ -213,51 +273,33 @@ class CreateCommand(QuantumCommand, show.ShowOne):
     def get_parser(self, prog_name):
         parser = super(CreateCommand, self).get_parser(prog_name)
         parser.add_argument(
-            '--tenant-id', metavar='tenant-id',
+            '--tenant-id', metavar='TENANT_ID',
             help=_('the owner tenant ID'), )
         parser.add_argument(
             '--tenant_id',
             help=argparse.SUPPRESS)
         self.add_known_arguments(parser)
-        add_extra_argument(parser, 'value_specs',
-                           'new values for the %s' % self.resource)
         return parser
-
-    def add_known_arguments(self, parser):
-        pass
-
-    def args2body(self, parsed_args):
-        return {}
 
     def get_data(self, parsed_args):
         self.log.debug('get_data(%s)' % parsed_args)
         quantum_client = self.get_client()
         quantum_client.format = parsed_args.request_format
+        _extra_values = parse_args_to_dict(self.values_specs)
+        _merge_args(self, parsed_args, _extra_values,
+                    self.values_specs)
         body = self.args2body(parsed_args)
-        _extra_values = parse_args_to_dict(parsed_args.value_specs)
         body[self.resource].update(_extra_values)
         obj_creator = getattr(quantum_client,
                               "create_%s" % self.resource)
         data = obj_creator(body)
+        self.format_output_data(data)
         # {u'network': {u'id': u'e9424a76-6db4-4c93-97b6-ec311cd51f19'}}
         info = self.resource in data and data[self.resource] or None
         if info:
             print >>self.app.stdout, _('Created a new %s:' % self.resource)
         else:
             info = {'': ''}
-        for k, v in info.iteritems():
-            if isinstance(v, list):
-                value = ""
-                for _item in v:
-                    if value:
-                        value += "\n"
-                    if isinstance(_item, dict):
-                        value += utils.dumps(_item)
-                    else:
-                        value += str(_item)
-                info[k] = value
-            elif v is None:
-                info[k] = ''
         return zip(*sorted(info.iteritems()))
 
 
@@ -276,6 +318,7 @@ class UpdateCommand(QuantumCommand):
             help='ID or name of %s to update' % self.resource)
         add_extra_argument(parser, 'value_specs',
                            'new values for the %s' % self.resource)
+        self.add_known_arguments(parser)
         return parser
 
     def run(self, parsed_args):
@@ -283,16 +326,19 @@ class UpdateCommand(QuantumCommand):
         quantum_client = self.get_client()
         quantum_client.format = parsed_args.request_format
         value_specs = parsed_args.value_specs
-        if not value_specs:
+        dict_args = self.args2body(parsed_args).get(self.resource, {})
+        dict_specs = parse_args_to_dict(value_specs)
+        body = {self.resource: dict(dict_args.items() +
+                                    dict_specs.items())}
+        if not body[self.resource]:
             raise exceptions.CommandError(
                 "Must specify new values to update %s" % self.resource)
-        data = {self.resource: parse_args_to_dict(value_specs)}
         _id = find_resourceid_by_name_or_id(quantum_client,
                                             self.resource,
                                             parsed_args.id)
         obj_updator = getattr(quantum_client,
                               "update_%s" % self.resource)
-        obj_updator(_id, data)
+        obj_updator(_id, body)
         print >>self.app.stdout, (
             _('Updated %(resource)s: %(id)s') %
             {'id': parsed_args.id, 'resource': self.resource})
@@ -339,7 +385,7 @@ class DeleteCommand(QuantumCommand):
 
 
 class ListCommand(QuantumCommand, lister.Lister):
-    """List resourcs that belong to a given tenant
+    """List resources that belong to a given tenant
 
     """
 
@@ -355,11 +401,10 @@ class ListCommand(QuantumCommand, lister.Lister):
         add_extra_argument(parser, 'filter_specs', 'filters options')
         return parser
 
-    def get_data(self, parsed_args):
-        self.log.debug('get_data(%s)' % parsed_args)
+    def retrieve_list(self, parsed_args):
+        """Retrieve a list of resources from Quantum server"""
         quantum_client = self.get_client()
         search_opts = parse_args_to_dict(parsed_args.filter_specs)
-
         self.log.debug('search options: %s', search_opts)
         quantum_client.format = parsed_args.request_format
         fields = parsed_args.fields
@@ -375,17 +420,28 @@ class ListCommand(QuantumCommand, lister.Lister):
             search_opts.update({'verbose': 'True'})
         obj_lister = getattr(quantum_client,
                              "list_%ss" % self.resource)
-
         data = obj_lister(**search_opts)
-        info = []
+
         collection = self.resource + "s"
-        if collection in data:
-            info = data[collection]
+        return data.get(collection, [])
+
+    def extend_list(self, data, parsed_args):
+        """Update a retrieved list.
+
+        This method provides a way to modify a original list returned from
+        the quantum server. For example, you can add subnet cidr information
+        to a list network.
+        """
+        pass
+
+    def setup_columns(self, info, parsed_args):
         _columns = len(info) > 0 and sorted(info[0].keys()) or []
         if not _columns:
             # clean the parsed_args.columns so that cliff will not break
             parsed_args.columns = []
-        elif not parsed_args.columns and self.list_columns:
+        elif parsed_args.columns:
+            _columns = [x for x in parsed_args.columns if x in _columns]
+        elif self.list_columns:
             # if no -c(s) by user and list_columns, we use columns in
             # both list_columns and returned resource.
             # Also Keep their order the same as in list_columns
@@ -393,6 +449,12 @@ class ListCommand(QuantumCommand, lister.Lister):
         return (_columns, (utils.get_item_properties(
             s, _columns, formatters=self._formatters, )
             for s in info), )
+
+    def get_data(self, parsed_args):
+        self.log.debug('get_data(%s)' % parsed_args)
+        data = self.retrieve_list(parsed_args)
+        self.extend_list(data, parsed_args)
+        return self.setup_columns(data, parsed_args)
 
 
 class ShowCommand(QuantumCommand, show.ShowOne):
@@ -435,23 +497,9 @@ class ShowCommand(QuantumCommand, show.ShowOne):
 
         obj_shower = getattr(quantum_client, "show_%s" % self.resource)
         data = obj_shower(_id, **params)
+        self.format_output_data(data)
+        resource = data[self.resource]
         if self.resource in data:
-            for k, v in data[self.resource].iteritems():
-                if isinstance(v, list):
-                    value = ""
-                    for _item in v:
-                        if value:
-                            value += "\n"
-                        if isinstance(_item, dict):
-                            value += utils.dumps(_item)
-                        else:
-                            value += str(_item)
-                    data[self.resource][k] = value
-                elif isinstance(v, dict):
-                    value = utils.dumps(v)
-                    data[self.resource][k] = value
-                elif v is None:
-                    data[self.resource][k] = ''
-            return zip(*sorted(data[self.resource].iteritems()))
+            return zip(*sorted(resource.iteritems()))
         else:
             return None

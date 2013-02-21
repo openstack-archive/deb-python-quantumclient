@@ -15,16 +15,17 @@
 #
 # vim: tabstop=4 shiftwidth=4 softtabstop=4
 
-import mox
-from mox import ContainsKeyValue, IsA, StrContains
-import unittest
-
 import httplib2
 import json
+import unittest
 import uuid
 
-from quantumclient.common import exceptions
+import mox
+from mox import ContainsKeyValue, IsA, StrContains
+import testtools
+
 from quantumclient.client import HTTPClient
+from quantumclient.common import exceptions
 
 
 USERNAME = 'testuser'
@@ -54,19 +55,17 @@ KS_TOKEN_RESULT = {
 }
 
 
-class CLITestAuthKeystone(unittest.TestCase):
+class CLITestAuthKeystone(testtools.TestCase):
 
     def setUp(self):
         """Prepare the test environment"""
+        super(CLITestAuthKeystone, self).setUp()
         self.mox = mox.Mox()
         self.client = HTTPClient(username=USERNAME, tenant_name=TENANT_NAME,
                                  password=PASSWORD, auth_url=AUTH_URL,
                                  region_name=REGION)
-
-    def tearDown(self):
-        """Clear the test environment"""
-        self.mox.VerifyAll()
-        self.mox.UnsetStubs()
+        self.addCleanup(self.mox.VerifyAll)
+        self.addCleanup(self.mox.UnsetStubs)
 
     def test_get_token(self):
         self.mox.StubOutWithMock(self.client, "request")

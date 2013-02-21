@@ -16,11 +16,12 @@
 # vim: tabstop=4 shiftwidth=4 softtabstop=4
 
 import sys
-import unittest
 
+import fixtures
 import mox
-from mox import ContainsKeyValue
 from mox import Comparator
+from mox import ContainsKeyValue
+import testtools
 
 from quantumclient.quantum import v2_0 as quantumv20
 from quantumclient.v2_0.client import Client
@@ -112,7 +113,7 @@ class MyComparator(Comparator):
         return str(self.lhs)
 
 
-class CLITestV20Base(unittest.TestCase):
+class CLITestV20Base(testtools.TestCase):
 
     test_id = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'
 
@@ -121,27 +122,27 @@ class CLITestV20Base(unittest.TestCase):
 
     def setUp(self):
         """Prepare the test environment"""
+        super(CLITestV20Base, self).setUp()
         self.mox = mox.Mox()
         self.endurl = ENDURL
         self.client = Client(token=TOKEN, endpoint_url=self.endurl)
         self.fake_stdout = FakeStdout()
-        sys.stdout = self.fake_stdout
-        self.old_find_resourceid = quantumv20.find_resourceid_by_name_or_id
-        quantumv20.find_resourceid_by_name_or_id = self._find_resourceid
-
-    def tearDown(self):
-        """Clear the test environment"""
-        sys.stdout = sys.__stdout__
-        quantumv20.find_resourceid_by_name_or_id = self.old_find_resourceid
+        self.useFixture(fixtures.MonkeyPatch('sys.stdout', self.fake_stdout))
+        self.useFixture(fixtures.MonkeyPatch(
+            'quantumclient.quantum.v2_0.find_resourceid_by_name_or_id',
+            self._find_resourceid))
 
     def _test_create_resource(self, resource, cmd,
                               name, myid, args,
                               position_names, position_values, tenant_id=None,
-                              tags=None, admin_state_up=True, shared=False):
+                              tags=None, admin_state_up=True, shared=False,
+                              extra_body=None):
         self.mox.StubOutWithMock(cmd, "get_client")
         self.mox.StubOutWithMock(self.client.httpclient, "request")
         cmd.get_client().MultipleTimes().AndReturn(self.client)
-        if (resource == 'subnet' or resource == 'floatingip'):
+        non_admin_status_resources = ['subnet', 'floatingip', 'security_group',
+                                      'security_group_rule']
+        if (resource in non_admin_status_resources):
             body = {resource: {}, }
         else:
             body = {resource: {'admin_state_up': admin_state_up, }, }
@@ -151,12 +152,15 @@ class CLITestV20Base(unittest.TestCase):
             body[resource].update({'tags': tags})
         if shared:
             body[resource].update({'shared': shared})
+        if extra_body:
+            body[resource].update(extra_body)
 
         for i in xrange(len(position_names)):
             body[resource].update({position_names[i]: position_values[i]})
         ress = {resource:
-                {'id': myid,
-                 'name': name, }, }
+                {'id': myid}, }
+        if name:
+            ress[resource].update({'name': name})
         resstr = self.client.serialize(ress)
         # url method body
         path = getattr(self.client, resource + "s_path")
@@ -168,13 +172,15 @@ class CLITestV20Base(unittest.TestCase):
                                                         resstr))
         self.mox.ReplayAll()
         cmd_parser = cmd.get_parser('create_' + resource)
-        parsed_args = cmd_parser.parse_args(args)
-        cmd.run(parsed_args)
+        known_args, values_specs = cmd_parser.parse_known_args(args)
+        cmd.values_specs = values_specs
+        cmd.run(known_args)
         self.mox.VerifyAll()
         self.mox.UnsetStubs()
         _str = self.fake_stdout.make_string()
         self.assertTrue(myid in _str)
-        self.assertTrue(name in _str)
+        if name:
+            self.assertTrue(name in _str)
 
     def _test_list_columns(self, cmd, resources_collection,
                            resources_out, args=['-f', 'json']):

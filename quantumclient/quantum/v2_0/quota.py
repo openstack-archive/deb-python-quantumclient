@@ -33,7 +33,7 @@ def get_tenant_id(tenant_id, client):
 
 
 class DeleteQuota(QuantumCommand):
-    """Delete a given tenant's quotas."""
+    """Delete defined quotas of a given tenant."""
 
     api = 'network'
     resource = 'quota'
@@ -65,7 +65,7 @@ class DeleteQuota(QuantumCommand):
 
 
 class ListQuota(QuantumCommand, lister.Lister):
-    """List all tenants' quotas."""
+    """List defined quotas of all tenants."""
 
     api = 'network'
     resource = 'quota'
@@ -95,7 +95,7 @@ class ListQuota(QuantumCommand, lister.Lister):
 
 
 class ShowQuota(QuantumCommand, show.ShowOne):
-    """Show information of a given resource
+    """Show quotas of a given tenant
 
     """
     api = 'network'
@@ -142,7 +142,7 @@ class ShowQuota(QuantumCommand, show.ShowOne):
 
 
 class UpdateQuota(QuantumCommand, show.ShowOne):
-    """Update port's information."""
+    """Define tenant's quotas not to use defaults."""
 
     resource = 'quota'
     log = logging.getLogger(__name__ + '.UpdateQuota')
@@ -164,6 +164,12 @@ class UpdateQuota(QuantumCommand, show.ShowOne):
         parser.add_argument(
             '--port', metavar='ports',
             help='the limit of port quota')
+        parser.add_argument(
+            '--router', metavar='routers',
+            help='the limit of router quota')
+        parser.add_argument(
+            '--floatingip', metavar='floatingips',
+            help='the limit of floating IP quota')
         quantumv20.add_extra_argument(
             parser, 'value_specs',
             'new values for the %s' % self.resource)
@@ -183,7 +189,7 @@ class UpdateQuota(QuantumCommand, show.ShowOne):
         quantum_client = self.get_client()
         quantum_client.format = parsed_args.request_format
         quota = {}
-        for resource in ('network', 'subnet', 'port'):
+        for resource in ('network', 'subnet', 'port', 'router', 'floatingip'):
             if getattr(parsed_args, resource):
                 quota[resource] = self._validate_int(
                     resource,

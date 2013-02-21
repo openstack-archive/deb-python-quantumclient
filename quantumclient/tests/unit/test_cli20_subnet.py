@@ -17,13 +17,13 @@
 
 import sys
 
+from quantumclient.quantum.v2_0.subnet import CreateSubnet
+from quantumclient.quantum.v2_0.subnet import DeleteSubnet
+from quantumclient.quantum.v2_0.subnet import ListSubnet
+from quantumclient.quantum.v2_0.subnet import ShowSubnet
+from quantumclient.quantum.v2_0.subnet import UpdateSubnet
 from quantumclient.tests.unit.test_cli20 import CLITestV20Base
 from quantumclient.tests.unit.test_cli20 import MyApp
-from quantumclient.quantum.v2_0.subnet import CreateSubnet
-from quantumclient.quantum.v2_0.subnet import ListSubnet
-from quantumclient.quantum.v2_0.subnet import UpdateSubnet
-from quantumclient.quantum.v2_0.subnet import ShowSubnet
-from quantumclient.quantum.v2_0.subnet import DeleteSubnet
 
 
 class CLITestV20Subnet(CLITestV20Base):
@@ -51,7 +51,7 @@ class CLITestV20Subnet(CLITestV20Base):
         myid = 'myid'
         netid = 'netid'
         cidr = 'cidrvalue'
-        args = ['--no-gateway',  netid, cidr]
+        args = ['--no-gateway', netid, cidr]
         position_names = ['ip_version', 'network_id', 'cidr', 'gateway_ip']
         position_values = [4, netid, cidr, None]
         _str = self._test_create_resource(resource, cmd, name, myid, args,
@@ -66,7 +66,7 @@ class CLITestV20Subnet(CLITestV20Base):
         netid = 'netid'
         cidr = 'cidrvalue'
         gateway = 'gatewayvalue'
-        args = ['--gateway',  gateway, '--no-gateway',  netid, cidr]
+        args = ['--gateway', gateway, '--no-gateway', netid, cidr]
         position_names = ['ip_version', 'network_id', 'cidr', 'gateway_ip']
         position_values = [4, netid, cidr, None]
         try:
@@ -142,6 +142,155 @@ class CLITestV20Subnet(CLITestV20Base):
                 '--allocation_pool', 'start=1.1.1.10,end=1.1.1.20',
                 '--allocation_pool', 'start=1.1.1.30,end=1.1.1.40',
                 netid, cidr]
+        position_names = ['ip_version', 'allocation_pools', 'network_id',
+                          'cidr']
+        pools = [{'start': '1.1.1.10', 'end': '1.1.1.20'},
+                 {'start': '1.1.1.30', 'end': '1.1.1.40'}]
+        position_values = [4, pools, netid, cidr]
+        _str = self._test_create_resource(resource, cmd, name, myid, args,
+                                          position_names, position_values,
+                                          tenant_id='tenantid')
+
+    def test_create_subnet_host_route(self):
+        """Create subnet: --tenant_id tenantid <host_route> netid cidr.
+        The <host_route> is
+        --host-route destination=172.16.1.0/24,nexthop=1.1.1.20
+        """
+        resource = 'subnet'
+        cmd = CreateSubnet(MyApp(sys.stdout), None)
+        name = 'myname'
+        myid = 'myid'
+        netid = 'netid'
+        cidr = 'prefixvalue'
+        args = ['--tenant_id', 'tenantid',
+                '--host-route', 'destination=172.16.1.0/24,nexthop=1.1.1.20',
+                netid, cidr]
+        position_names = ['ip_version', 'host_routes', 'network_id',
+                          'cidr']
+        route = [{'destination': '172.16.1.0/24', 'nexthop': '1.1.1.20'}]
+        position_values = [4, route, netid, cidr]
+        _str = self._test_create_resource(resource, cmd, name, myid, args,
+                                          position_names, position_values,
+                                          tenant_id='tenantid')
+
+    def test_create_subnet_host_routes(self):
+        """Create subnet: --tenant-id tenantid <host_routes> netid cidr.
+        The <host_routes> are
+        --host-route destination=172.16.1.0/24,nexthop=1.1.1.20 and
+        --host-route destination=172.17.7.0/24,nexthop=1.1.1.40
+        """
+        resource = 'subnet'
+        cmd = CreateSubnet(MyApp(sys.stdout), None)
+        name = 'myname'
+        myid = 'myid'
+        netid = 'netid'
+        cidr = 'prefixvalue'
+        args = ['--tenant_id', 'tenantid',
+                '--host-route', 'destination=172.16.1.0/24,nexthop=1.1.1.20',
+                '--host-route', 'destination=172.17.7.0/24,nexthop=1.1.1.40',
+                netid, cidr]
+        position_names = ['ip_version', 'host_routes', 'network_id',
+                          'cidr']
+        routes = [{'destination': '172.16.1.0/24', 'nexthop': '1.1.1.20'},
+                  {'destination': '172.17.7.0/24', 'nexthop': '1.1.1.40'}]
+        position_values = [4, routes, netid, cidr]
+        _str = self._test_create_resource(resource, cmd, name, myid, args,
+                                          position_names, position_values,
+                                          tenant_id='tenantid')
+
+    def test_create_subnet_dns_nameservers(self):
+        """Create subnet: --tenant-id tenantid <dns-nameservers> netid cidr.
+        The <dns-nameservers> are
+        --dns-nameserver 1.1.1.20 and --dns-nameserver 1.1.1.40
+        """
+        resource = 'subnet'
+        cmd = CreateSubnet(MyApp(sys.stdout), None)
+        name = 'myname'
+        myid = 'myid'
+        netid = 'netid'
+        cidr = 'prefixvalue'
+        args = ['--tenant_id', 'tenantid',
+                '--dns-nameserver', '1.1.1.20',
+                '--dns-nameserver', '1.1.1.40',
+                netid, cidr]
+        position_names = ['ip_version', 'dns_nameservers', 'network_id',
+                          'cidr']
+        nameservers = ['1.1.1.20', '1.1.1.40']
+        position_values = [4, nameservers, netid, cidr]
+        _str = self._test_create_resource(resource, cmd, name, myid, args,
+                                          position_names, position_values,
+                                          tenant_id='tenantid')
+
+    def test_create_subnet_with_disable_dhcp(self):
+        """Create subnet: --tenant-id tenantid --disable-dhcp netid cidr."""
+        resource = 'subnet'
+        cmd = CreateSubnet(MyApp(sys.stdout), None)
+        name = 'myname'
+        myid = 'myid'
+        netid = 'netid'
+        cidr = 'prefixvalue'
+        args = ['--tenant_id', 'tenantid',
+                '--disable-dhcp',
+                netid, cidr]
+        position_names = ['ip_version', 'enable_dhcp', 'network_id',
+                          'cidr']
+        position_values = [4, False, netid, cidr]
+        _str = self._test_create_resource(resource, cmd, name, myid, args,
+                                          position_names, position_values,
+                                          tenant_id='tenantid')
+
+    def test_create_subnet_merge_single_plurar(self):
+        resource = 'subnet'
+        cmd = CreateSubnet(MyApp(sys.stdout), None)
+        name = 'myname'
+        myid = 'myid'
+        netid = 'netid'
+        cidr = 'prefixvalue'
+        args = ['--tenant_id', 'tenantid',
+                '--allocation-pool', 'start=1.1.1.10,end=1.1.1.20',
+                netid, cidr,
+                '--allocation-pools', 'list=true', 'type=dict',
+                'start=1.1.1.30,end=1.1.1.40']
+        position_names = ['ip_version', 'allocation_pools', 'network_id',
+                          'cidr']
+        pools = [{'start': '1.1.1.10', 'end': '1.1.1.20'},
+                 {'start': '1.1.1.30', 'end': '1.1.1.40'}]
+        position_values = [4, pools, netid, cidr]
+        _str = self._test_create_resource(resource, cmd, name, myid, args,
+                                          position_names, position_values,
+                                          tenant_id='tenantid')
+
+    def test_create_subnet_merge_plurar(self):
+        resource = 'subnet'
+        cmd = CreateSubnet(MyApp(sys.stdout), None)
+        name = 'myname'
+        myid = 'myid'
+        netid = 'netid'
+        cidr = 'prefixvalue'
+        args = ['--tenant_id', 'tenantid',
+                netid, cidr,
+                '--allocation-pools', 'list=true', 'type=dict',
+                'start=1.1.1.30,end=1.1.1.40']
+        position_names = ['ip_version', 'allocation_pools', 'network_id',
+                          'cidr']
+        pools = [{'start': '1.1.1.30', 'end': '1.1.1.40'}]
+        position_values = [4, pools, netid, cidr]
+        _str = self._test_create_resource(resource, cmd, name, myid, args,
+                                          position_names, position_values,
+                                          tenant_id='tenantid')
+
+    def test_create_subnet_merge_single_single(self):
+        resource = 'subnet'
+        cmd = CreateSubnet(MyApp(sys.stdout), None)
+        name = 'myname'
+        myid = 'myid'
+        netid = 'netid'
+        cidr = 'prefixvalue'
+        args = ['--tenant_id', 'tenantid',
+                '--allocation-pool', 'start=1.1.1.10,end=1.1.1.20',
+                netid, cidr,
+                '--allocation-pool',
+                'start=1.1.1.30,end=1.1.1.40']
         position_names = ['ip_version', 'allocation_pools', 'network_id',
                           'cidr']
         pools = [{'start': '1.1.1.10', 'end': '1.1.1.20'},
