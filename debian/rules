@@ -17,3 +17,7 @@ override_dh_auto_clean:
 	dh_auto_clean
 	rm -f quantumclient/versioninfo
 	cp debian/test_cli20_network.py quantumclient/tests/unit
+
+override_dh_install:
+	dh_install
+	install -D -m 0644 tools/quantum.bash_completion $(CURDIR)/debian/python-quantumclient/etc/bash_completion.d/quantum.bash_completion
