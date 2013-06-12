@@ -18,4 +18,3 @@ endif
 override_dh_auto_clean:
 	dh_auto_clean
 	rm -f quantumclient/versioninfo
-	cp debian/test_cli20_network.py quantumclient/tests/unit
