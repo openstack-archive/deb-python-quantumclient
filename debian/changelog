@@ -5,6 +5,8 @@ python-quantumclient (1:2.2.1-1) unstable; urgency=low
   * Removed now obsolete patch.
   * Removed cp debian/test_cli20_network.py quantumclient/tests/unit hack, not
     needed by new upstream release.
+  * Added new build-depends: python-fixtures, python-iso8601, added iso8601 in
+    Depends: as well.
 
  -- Thomas Goirand <zigo@debian.org>  Wed, 12 Jun 2013 22:15:09 +0800
 
