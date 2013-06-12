@@ -1,3 +1,9 @@
+python-quantumclient (1:2.2.1-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Thomas Goirand <zigo@debian.org>  Wed, 12 Jun 2013 22:15:09 +0800
+
 python-quantumclient (1:2.1-2) unstable; urgency=low
 
   * Uploading to unstable.
