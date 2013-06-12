@@ -16,7 +16,7 @@ Build-Depends-Indep: cliff-tablib,
                      python-mox,
                      python-nose,
                      python-prettytable,
-                     python-pyparsing,
+                     python-pyparsing (>= 1.5.7+dfsg1-1~),
                      python-simplejson
 Standards-Version: 3.9.3
 Homepage: http://launchpad.net/python-quantumclient
@@ -31,7 +31,7 @@ Depends: python-argparse,
          python-cliff,
          python-httplib2,
          python-prettytable,
-         python-pyparsing,
+         python-pyparsing (>= 1.5.7+dfsg1-1~),
          python-simplejson,
          ${misc:Depends},
          ${python:Depends},
