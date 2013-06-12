@@ -57,7 +57,7 @@ class CLITestV20FloatingIps(CLITestV20Base):
 
         # Test dashed options
         args = [name, '--port-id', pid]
-        position_names = ['floating_network_id', 'port-id']
+        position_names = ['floating_network_id', 'port_id']
         _str = self._test_create_resource(resource, cmd, name, myid, args,
                                           position_names, position_values)
 
@@ -76,7 +76,7 @@ class CLITestV20FloatingIps(CLITestV20Base):
                                           position_names, position_values)
         # Test dashed options
         args = [name, '--port-id', pid, '--fixed-ip-address', addr]
-        position_names = ['floating_network_id', 'port-id', 'fixed-ip-address']
+        position_names = ['floating_network_id', 'port_id', 'fixed_ip_address']
         _str = self._test_create_resource(resource, cmd, name, myid, args,
                                           position_names, position_values)
 
@@ -85,6 +85,27 @@ class CLITestV20FloatingIps(CLITestV20Base):
         resources = 'floatingips'
         cmd = ListFloatingIP(MyApp(sys.stdout), None)
         self._test_list_resources(resources, cmd, True)
+
+    def test_list_floatingips_pagination(self):
+        resources = 'floatingips'
+        cmd = ListFloatingIP(MyApp(sys.stdout), None)
+        self._test_list_resources_with_pagination(resources, cmd)
+
+    def test_list_floatingips_sort(self):
+        """list floatingips: --sort-key name --sort-key id --sort-key asc
+        --sort-key desc
+        """
+        resources = 'floatingips'
+        cmd = ListFloatingIP(MyApp(sys.stdout), None)
+        self._test_list_resources(resources, cmd,
+                                  sort_key=["name", "id"],
+                                  sort_dir=["asc", "desc"])
+
+    def test_list_floatingips_limit(self):
+        """list floatingips: -P."""
+        resources = 'floatingips'
+        cmd = ListFloatingIP(MyApp(sys.stdout), None)
+        self._test_list_resources(resources, cmd, page_size=1000)
 
     def test_delete_floatingip(self):
         """Delete floatingip: fip1"""
@@ -108,7 +129,7 @@ class CLITestV20FloatingIps(CLITestV20Base):
         cmd = DisassociateFloatingIP(MyApp(sys.stdout), None)
         args = ['myid']
         self._test_update_resource(resource, cmd, 'myid',
-                                   args,  {"port_id": None}
+                                   args, {"port_id": None}
                                    )
 
     def test_associate_ip(self):
@@ -117,5 +138,5 @@ class CLITestV20FloatingIps(CLITestV20Base):
         cmd = AssociateFloatingIP(MyApp(sys.stdout), None)
         args = ['myid', 'portid']
         self._test_update_resource(resource, cmd, 'myid',
-                                   args,  {"port_id": "portid"}
+                                   args, {"port_id": "portid"}
                                    )

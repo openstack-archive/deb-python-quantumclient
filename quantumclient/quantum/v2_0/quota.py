@@ -33,7 +33,7 @@ def get_tenant_id(tenant_id, client):
 
 
 class DeleteQuota(QuantumCommand):
-    """Delete a given tenant's quotas."""
+    """Delete defined quotas of a given tenant."""
 
     api = 'network'
     resource = 'quota'
@@ -65,7 +65,7 @@ class DeleteQuota(QuantumCommand):
 
 
 class ListQuota(QuantumCommand, lister.Lister):
-    """List all tenants' quotas."""
+    """List defined quotas of all tenants."""
 
     api = 'network'
     resource = 'quota'
@@ -95,7 +95,7 @@ class ListQuota(QuantumCommand, lister.Lister):
 
 
 class ShowQuota(QuantumCommand, show.ShowOne):
-    """Show information of a given resource
+    """Show quotas of a given tenant
 
     """
     api = 'network'
@@ -142,7 +142,7 @@ class ShowQuota(QuantumCommand, show.ShowOne):
 
 
 class UpdateQuota(QuantumCommand, show.ShowOne):
-    """Update port's information."""
+    """Define tenant's quotas not to use defaults."""
 
     resource = 'quota'
     log = logging.getLogger(__name__ + '.UpdateQuota')
@@ -157,16 +157,25 @@ class UpdateQuota(QuantumCommand, show.ShowOne):
             help=argparse.SUPPRESS)
         parser.add_argument(
             '--network', metavar='networks',
-            help='the limit of network quota')
+            help='the limit of networks')
         parser.add_argument(
             '--subnet', metavar='subnets',
-            help='the limit of subnet quota')
+            help='the limit of subnets')
         parser.add_argument(
             '--port', metavar='ports',
-            help='the limit of port quota')
-        quantumv20.add_extra_argument(
-            parser, 'value_specs',
-            'new values for the %s' % self.resource)
+            help='the limit of ports')
+        parser.add_argument(
+            '--router', metavar='routers',
+            help='the limit of routers')
+        parser.add_argument(
+            '--floatingip', metavar='floatingips',
+            help='the limit of floating IPs')
+        parser.add_argument(
+            '--security-group', metavar='security_groups',
+            help='the limit of security groups')
+        parser.add_argument(
+            '--security-group-rule', metavar='security_group_rules',
+            help='the limit of security groups rules')
         return parser
 
     def _validate_int(self, name, value):
@@ -178,24 +187,33 @@ class UpdateQuota(QuantumCommand, show.ShowOne):
             raise exceptions.QuantumClientException(message=message)
         return return_value
 
-    def get_data(self, parsed_args):
-        self.log.debug('run(%s)' % parsed_args)
-        quantum_client = self.get_client()
-        quantum_client.format = parsed_args.request_format
+    def args2body(self, parsed_args):
         quota = {}
-        for resource in ('network', 'subnet', 'port'):
+        for resource in ('network', 'subnet', 'port', 'router', 'floatingip',
+                         'security_group', 'security_group_rule'):
             if getattr(parsed_args, resource):
                 quota[resource] = self._validate_int(
                     resource,
                     getattr(parsed_args, resource))
-        value_specs = parsed_args.value_specs
-        if value_specs:
-            quota.update(quantumv20.parse_args_to_dict(value_specs))
+        return {self.resource: quota}
+
+    def get_data(self, parsed_args):
+        self.log.debug('run(%s)' % parsed_args)
+        quantum_client = self.get_client()
+        quantum_client.format = parsed_args.request_format
+        _extra_values = quantumv20.parse_args_to_dict(self.values_specs)
+        quantumv20._merge_args(self, parsed_args, _extra_values,
+                               self.values_specs)
+        body = self.args2body(parsed_args)
+        if self.resource in body:
+            body[self.resource].update(_extra_values)
+        else:
+            body[self.resource] = _extra_values
         obj_updator = getattr(quantum_client,
                               "update_%s" % self.resource)
         tenant_id = get_tenant_id(parsed_args.tenant_id,
                                   quantum_client)
-        data = obj_updator(tenant_id, {self.resource: quota})
+        data = obj_updator(tenant_id, body)
         if self.resource in data:
             for k, v in data[self.resource].iteritems():
                 if isinstance(v, list):

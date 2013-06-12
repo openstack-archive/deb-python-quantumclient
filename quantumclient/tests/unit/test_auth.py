@@ -15,15 +15,14 @@
 #
 # vim: tabstop=4 shiftwidth=4 softtabstop=4
 
-import mox
-from mox import ContainsKeyValue, IsA, StrContains
-import unittest
-
 import httplib2
 import json
 import uuid
 
-from quantumclient.common import exceptions
+import mox
+from mox import ContainsKeyValue, IsA, StrContains
+import testtools
+
 from quantumclient.client import HTTPClient
 
 
@@ -53,20 +52,29 @@ KS_TOKEN_RESULT = {
     }
 }
 
+ENDPOINTS_RESULT = {
+    'endpoints': [{
+        'type': 'network',
+        'name': 'Quantum Service',
+        'region': REGION,
+        'adminURL': ENDPOINT_URL,
+        'internalURL': ENDPOINT_URL,
+        'publicURL': ENDPOINT_URL
+    }]
+}
 
-class CLITestAuthKeystone(unittest.TestCase):
+
+class CLITestAuthKeystone(testtools.TestCase):
 
     def setUp(self):
         """Prepare the test environment"""
+        super(CLITestAuthKeystone, self).setUp()
         self.mox = mox.Mox()
         self.client = HTTPClient(username=USERNAME, tenant_name=TENANT_NAME,
                                  password=PASSWORD, auth_url=AUTH_URL,
                                  region_name=REGION)
-
-    def tearDown(self):
-        """Clear the test environment"""
-        self.mox.VerifyAll()
-        self.mox.UnsetStubs()
+        self.addCleanup(self.mox.VerifyAll)
+        self.addCleanup(self.mox.UnsetStubs)
 
     def test_get_token(self):
         self.mox.StubOutWithMock(self.client, "request")
@@ -85,31 +93,12 @@ class CLITestAuthKeystone(unittest.TestCase):
         self.client.do_request('/resource', 'GET')
         self.assertEqual(self.client.endpoint_url, ENDPOINT_URL)
         self.assertEqual(self.client.auth_token, TOKEN)
-        self.assertEqual(self.client.token_retrieved, True)
-
-    def test_already_token_retrieved(self):
-        self.mox.StubOutWithMock(self.client, "request")
-
-        self.client.auth_token = TOKEN
-        self.client.endpoint_url = ENDPOINT_URL
-        self.client.token_retrieved = True
-
-        res200 = self.mox.CreateMock(httplib2.Response)
-        res200.status = 200
-
-        self.client.request(StrContains(ENDPOINT_URL + '/resource'), 'GET',
-                            headers=ContainsKeyValue('X-Auth-Token', TOKEN)).\
-            AndReturn((res200, ''))
-        self.mox.ReplayAll()
-
-        self.client.do_request('/resource', 'GET')
 
     def test_refresh_token(self):
         self.mox.StubOutWithMock(self.client, "request")
 
         self.client.auth_token = TOKEN
         self.client.endpoint_url = ENDPOINT_URL
-        self.client.token_retrieved = True
 
         res200 = self.mox.CreateMock(httplib2.Response)
         res200.status = 200
@@ -125,6 +114,47 @@ class CLITestAuthKeystone(unittest.TestCase):
             AndReturn((res200, json.dumps(KS_TOKEN_RESULT)))
         self.client.request(StrContains(ENDPOINT_URL + '/resource'), 'GET',
                             headers=ContainsKeyValue('X-Auth-Token', TOKEN)).\
+            AndReturn((res200, ''))
+        self.mox.ReplayAll()
+        self.client.do_request('/resource', 'GET')
+
+    def test_get_endpoint_url(self):
+        self.mox.StubOutWithMock(self.client, "request")
+
+        self.client.auth_token = TOKEN
+
+        res200 = self.mox.CreateMock(httplib2.Response)
+        res200.status = 200
+
+        self.client.request(StrContains(AUTH_URL +
+                                        '/tokens/%s/endpoints' % TOKEN), 'GET',
+                            headers=IsA(dict)). \
+            AndReturn((res200, json.dumps(ENDPOINTS_RESULT)))
+        self.client.request(StrContains(ENDPOINT_URL + '/resource'), 'GET',
+                            headers=ContainsKeyValue('X-Auth-Token', TOKEN)). \
+            AndReturn((res200, ''))
+        self.mox.ReplayAll()
+        self.client.do_request('/resource', 'GET')
+
+    def test_get_endpoint_url_failed(self):
+        self.mox.StubOutWithMock(self.client, "request")
+
+        self.client.auth_token = TOKEN
+
+        res200 = self.mox.CreateMock(httplib2.Response)
+        res200.status = 200
+        res401 = self.mox.CreateMock(httplib2.Response)
+        res401.status = 401
+
+        self.client.request(StrContains(AUTH_URL +
+                                        '/tokens/%s/endpoints' % TOKEN), 'GET',
+                            headers=IsA(dict)). \
+            AndReturn((res401, ''))
+        self.client.request(AUTH_URL + '/tokens', 'POST',
+                            body=IsA(str), headers=IsA(dict)). \
+            AndReturn((res200, json.dumps(KS_TOKEN_RESULT)))
+        self.client.request(StrContains(ENDPOINT_URL + '/resource'), 'GET',
+                            headers=ContainsKeyValue('X-Auth-Token', TOKEN)). \
             AndReturn((res200, ''))
         self.mox.ReplayAll()
         self.client.do_request('/resource', 'GET')

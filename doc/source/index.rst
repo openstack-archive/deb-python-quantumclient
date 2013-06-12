@@ -3,13 +3,17 @@ Python bindings to the OpenStack Network API
 
 In order to use the python quantum client directly, you must first obtain an auth token and identify which endpoint you wish to speak to. Once you have done so, you can use the API like so::
 
+    >>> import logging
     >>> from quantumclient.quantum import client
+    >>> logging.basicConfig(level=logging.DEBUG)
     >>> quantum = client.Client('2.0', endpoint_url=OS_URL, token=OS_TOKEN)
+    >>> quantum.format = 'json'
     >>> network = {'name': 'mynetwork', 'admin_state_up': True}
     >>> quantum.create_network({'network':network})
     >>> networks = quantum.list_networks(name='mynetwork')
     >>> print networks
-    >>> quantum.delete_network(name='mynetwork')
+    >>> network_id = networks['networks'][0]['id']
+    >>> quantum.delete_network(network_id)
 
 
 Command-line Tool
@@ -38,3 +42,14 @@ Release Notes
 2.0
 -----
 * support Quantum API 2.0
+
+2.2.0
+-----
+* add security group commands
+* add Lbaas commands
+* allow options put after positional arguments
+* add NVP queue and net gateway commands
+* add commands for agent management extensions
+* add commands for DHCP and L3 agents scheduling
+* support XML request format
+* support pagination options

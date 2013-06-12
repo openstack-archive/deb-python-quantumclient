@@ -15,14 +15,13 @@
 #
 # vim: tabstop=4 shiftwidth=4 softtabstop=4
 
-import sys
-import unittest
-
+import fixtures
 import mox
-from mox import ContainsKeyValue
 from mox import Comparator
+from mox import ContainsKeyValue
+import testtools
 
-from quantumclient.quantum import v2_0 as quantumv20
+from quantumclient import shell
 from quantumclient.v2_0.client import Client
 
 
@@ -60,6 +59,31 @@ class MyApp(object):
 def end_url(path, query=None):
     _url_str = ENDURL + "/v" + API_VERSION + path + "." + FORMAT
     return query and _url_str + "?" + query or _url_str
+
+
+class MyUrlComparator(Comparator):
+    def __init__(self, lhs, client):
+        self.lhs = lhs
+        self.client = client
+
+    def equals(self, rhs):
+        return str(self) == rhs
+
+    def __str__(self):
+        if self.client and self.client.format != FORMAT:
+            lhs_parts = self.lhs.split("?", 1)
+            if len(lhs_parts) == 2:
+                lhs = ("%s%s?%s" % (lhs_parts[0][:-4],
+                                    self.client.format,
+                                    lhs_parts[1]))
+            else:
+                lhs = ("%s%s" % (lhs_parts[0][:-4],
+                                 self.client.format))
+            return lhs
+        return self.lhs
+
+    def __repr__(self):
+        return str(self)
 
 
 class MyComparator(Comparator):
@@ -112,7 +136,7 @@ class MyComparator(Comparator):
         return str(self.lhs)
 
 
-class CLITestV20Base(unittest.TestCase):
+class CLITestV20Base(testtools.TestCase):
 
     test_id = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'
 
@@ -121,27 +145,28 @@ class CLITestV20Base(unittest.TestCase):
 
     def setUp(self):
         """Prepare the test environment"""
+        super(CLITestV20Base, self).setUp()
         self.mox = mox.Mox()
         self.endurl = ENDURL
         self.client = Client(token=TOKEN, endpoint_url=self.endurl)
         self.fake_stdout = FakeStdout()
-        sys.stdout = self.fake_stdout
-        self.old_find_resourceid = quantumv20.find_resourceid_by_name_or_id
-        quantumv20.find_resourceid_by_name_or_id = self._find_resourceid
-
-    def tearDown(self):
-        """Clear the test environment"""
-        sys.stdout = sys.__stdout__
-        quantumv20.find_resourceid_by_name_or_id = self.old_find_resourceid
+        self.useFixture(fixtures.MonkeyPatch('sys.stdout', self.fake_stdout))
+        self.useFixture(fixtures.MonkeyPatch(
+            'quantumclient.quantum.v2_0.find_resourceid_by_name_or_id',
+            self._find_resourceid))
 
     def _test_create_resource(self, resource, cmd,
                               name, myid, args,
                               position_names, position_values, tenant_id=None,
-                              tags=None, admin_state_up=True, shared=False):
+                              tags=None, admin_state_up=True, shared=False,
+                              extra_body=None, **kwargs):
         self.mox.StubOutWithMock(cmd, "get_client")
         self.mox.StubOutWithMock(self.client.httpclient, "request")
         cmd.get_client().MultipleTimes().AndReturn(self.client)
-        if (resource == 'subnet' or resource == 'floatingip'):
+        non_admin_status_resources = ['subnet', 'floatingip', 'security_group',
+                                      'security_group_rule', 'qos_queue',
+                                      'network_gateway']
+        if (resource in non_admin_status_resources):
             body = {resource: {}, }
         else:
             body = {resource: {'admin_state_up': admin_state_up, }, }
@@ -151,12 +176,16 @@ class CLITestV20Base(unittest.TestCase):
             body[resource].update({'tags': tags})
         if shared:
             body[resource].update({'shared': shared})
+        if extra_body:
+            body[resource].update(extra_body)
+        body[resource].update(kwargs)
 
         for i in xrange(len(position_names)):
             body[resource].update({position_names[i]: position_values[i]})
         ress = {resource:
-                {'id': myid,
-                 'name': name, }, }
+                {'id': myid}, }
+        if name:
+            ress[resource].update({'name': name})
         resstr = self.client.serialize(ress)
         # url method body
         path = getattr(self.client, resource + "s_path")
@@ -168,13 +197,13 @@ class CLITestV20Base(unittest.TestCase):
                                                         resstr))
         self.mox.ReplayAll()
         cmd_parser = cmd.get_parser('create_' + resource)
-        parsed_args = cmd_parser.parse_args(args)
-        cmd.run(parsed_args)
+        shell.run_command(cmd, cmd_parser, args)
         self.mox.VerifyAll()
         self.mox.UnsetStubs()
         _str = self.fake_stdout.make_string()
         self.assertTrue(myid in _str)
-        self.assertTrue(name in _str)
+        if name:
+            self.assertTrue(name in _str)
 
     def _test_list_columns(self, cmd, resources_collection,
                            resources_out, args=['-f', 'json']):
@@ -191,14 +220,13 @@ class CLITestV20Base(unittest.TestCase):
                                      TOKEN)).AndReturn((MyResp(200), resstr))
         self.mox.ReplayAll()
         cmd_parser = cmd.get_parser("list_" + resources_collection)
-
-        parsed_args = cmd_parser.parse_args(args)
-        cmd.run(parsed_args)
+        shell.run_command(cmd, cmd_parser, args)
         self.mox.VerifyAll()
         self.mox.UnsetStubs()
 
     def _test_list_resources(self, resources, cmd, detail=False, tags=[],
-                             fields_1=[], fields_2=[]):
+                             fields_1=[], fields_2=[], page_size=None,
+                             sort_key=[], sort_dir=[]):
         self.mox.StubOutWithMock(cmd, "get_client")
         self.mox.StubOutWithMock(self.client.httpclient, "request")
         cmd.get_client().MultipleTimes().AndReturn(self.client)
@@ -236,21 +264,77 @@ class CLITestV20Base(unittest.TestCase):
                 query += "&fields=" + field
             else:
                 query = "fields=" + field
+        if page_size:
+            args.append("--page-size")
+            args.append(str(page_size))
+            if query:
+                query += "&limit=%s" % page_size
+            else:
+                query = "limit=%s" % page_size
+        if sort_key:
+            for key in sort_key:
+                args.append('--sort-key')
+                args.append(key)
+                if query:
+                    query += '&'
+                query += 'sort_key=%s' % key
+        if sort_dir:
+            len_diff = len(sort_key) - len(sort_dir)
+            if len_diff > 0:
+                sort_dir += ['asc'] * len_diff
+            elif len_diff < 0:
+                sort_dir = sort_dir[:len(sort_key)]
+            for dir in sort_dir:
+                args.append('--sort-dir')
+                args.append(dir)
+                if query:
+                    query += '&'
+                query += 'sort_dir=%s' % dir
         path = getattr(self.client, resources + "_path")
         self.client.httpclient.request(
-            end_url(path, query), 'GET',
+            MyUrlComparator(end_url(path, query), self.client), 'GET',
             body=None,
             headers=ContainsKeyValue('X-Auth-Token',
                                      TOKEN)).AndReturn((MyResp(200), resstr))
         self.mox.ReplayAll()
         cmd_parser = cmd.get_parser("list_" + resources)
-
-        parsed_args = cmd_parser.parse_args(args)
-        cmd.run(parsed_args)
+        shell.run_command(cmd, cmd_parser, args)
         self.mox.VerifyAll()
         self.mox.UnsetStubs()
         _str = self.fake_stdout.make_string()
         self.assertTrue('myid1' in _str)
+
+    def _test_list_resources_with_pagination(self, resources, cmd):
+        self.mox.StubOutWithMock(cmd, "get_client")
+        self.mox.StubOutWithMock(self.client.httpclient, "request")
+        cmd.get_client().MultipleTimes().AndReturn(self.client)
+        path = getattr(self.client, resources + "_path")
+        fake_query = "marker=myid2&limit=2"
+        reses1 = {resources: [{'id': 'myid1', },
+                              {'id': 'myid2', }],
+                  '%s_links' % resources: [{'href': end_url(path, fake_query),
+                                            'rel': 'next'}]}
+        reses2 = {resources: [{'id': 'myid3', },
+                              {'id': 'myid4', }]}
+        resstr1 = self.client.serialize(reses1)
+        resstr2 = self.client.serialize(reses2)
+        self.client.httpclient.request(
+            end_url(path, ""), 'GET',
+            body=None,
+            headers=ContainsKeyValue('X-Auth-Token',
+                                     TOKEN)).AndReturn((MyResp(200), resstr1))
+        self.client.httpclient.request(
+            end_url(path, fake_query), 'GET',
+            body=None,
+            headers=ContainsKeyValue('X-Auth-Token',
+                                     TOKEN)).AndReturn((MyResp(200), resstr2))
+        self.mox.ReplayAll()
+        cmd_parser = cmd.get_parser("list_" + resources)
+
+        parsed_args = cmd_parser.parse_args("")
+        cmd.run(parsed_args)
+        self.mox.VerifyAll()
+        self.mox.UnsetStubs()
 
     def _test_update_resource(self, resource, cmd, myid, args, extrafields):
         self.mox.StubOutWithMock(cmd, "get_client")
@@ -259,15 +343,13 @@ class CLITestV20Base(unittest.TestCase):
         body = {resource: extrafields}
         path = getattr(self.client, resource + "_path")
         self.client.httpclient.request(
-            end_url(path % myid), 'PUT',
+            MyUrlComparator(end_url(path % myid), self.client), 'PUT',
             body=MyComparator(body, self.client),
             headers=ContainsKeyValue('X-Auth-Token',
                                      TOKEN)).AndReturn((MyResp(204), None))
         self.mox.ReplayAll()
         cmd_parser = cmd.get_parser("update_" + resource)
-
-        parsed_args = cmd_parser.parse_args(args)
-        cmd.run(parsed_args)
+        shell.run_command(cmd, cmd_parser, args)
         self.mox.VerifyAll()
         self.mox.UnsetStubs()
         _str = self.fake_stdout.make_string()
@@ -290,9 +372,7 @@ class CLITestV20Base(unittest.TestCase):
                                      TOKEN)).AndReturn((MyResp(200), resstr))
         self.mox.ReplayAll()
         cmd_parser = cmd.get_parser("show_" + resource)
-
-        parsed_args = cmd_parser.parse_args(args)
-        cmd.run(parsed_args)
+        shell.run_command(cmd, cmd_parser, args)
         self.mox.VerifyAll()
         self.mox.UnsetStubs()
         _str = self.fake_stdout.make_string()
@@ -311,9 +391,7 @@ class CLITestV20Base(unittest.TestCase):
                                      TOKEN)).AndReturn((MyResp(204), None))
         self.mox.ReplayAll()
         cmd_parser = cmd.get_parser("delete_" + resource)
-
-        parsed_args = cmd_parser.parse_args(args)
-        cmd.run(parsed_args)
+        shell.run_command(cmd, cmd_parser, args)
         self.mox.VerifyAll()
         self.mox.UnsetStubs()
         _str = self.fake_stdout.make_string()
@@ -332,10 +410,8 @@ class CLITestV20Base(unittest.TestCase):
             headers=ContainsKeyValue('X-Auth-Token',
                                      TOKEN)).AndReturn((MyResp(204), None))
         self.mox.ReplayAll()
-        cmd_parser = cmd.get_parser("update_" + resource)
-
-        parsed_args = cmd_parser.parse_args(args)
-        cmd.run(parsed_args)
+        cmd_parser = cmd.get_parser("delete_" + resource)
+        shell.run_command(cmd, cmd_parser, args)
         self.mox.VerifyAll()
         self.mox.UnsetStubs()
         _str = self.fake_stdout.make_string()

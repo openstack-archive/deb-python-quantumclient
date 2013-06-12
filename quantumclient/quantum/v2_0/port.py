@@ -35,12 +35,40 @@ def _format_fixed_ips(port):
 
 
 class ListPort(ListCommand):
-    """List networks that belong to a given tenant."""
+    """List ports that belong to a given tenant."""
 
     resource = 'port'
     log = logging.getLogger(__name__ + '.ListPort')
     _formatters = {'fixed_ips': _format_fixed_ips, }
     list_columns = ['id', 'name', 'mac_address', 'fixed_ips']
+    pagination_support = True
+    sorting_support = True
+
+
+class ListRouterPort(ListCommand):
+    """List ports that belong to a given tenant, with specified router"""
+
+    resource = 'port'
+    log = logging.getLogger(__name__ + '.ListRouterPort')
+    _formatters = {'fixed_ips': _format_fixed_ips, }
+    list_columns = ['id', 'name', 'mac_address', 'fixed_ips']
+    pagination_support = True
+    sorting_support = True
+
+    def get_parser(self, prog_name):
+        parser = super(ListRouterPort, self).get_parser(prog_name)
+        parser.add_argument(
+            'id', metavar='router',
+            help='ID or name of router to look up')
+        return parser
+
+    def get_data(self, parsed_args):
+        quantum_client = self.get_client()
+        quantum_client.format = parsed_args.request_format
+        _id = quantumv20.find_resourceid_by_name_or_id(
+            quantum_client, 'router', parsed_args.id)
+        self.values_specs.append('--device_id=%s' % _id)
+        return super(ListRouterPort, self).get_data(parsed_args)
 
 
 class ShowPort(ShowCommand):
@@ -85,13 +113,18 @@ class CreatePort(CreateCommand):
             action='append',
             help='desired IP for this port: '
             'subnet_id=<name_or_id>,ip_address=<ip>, '
-            'can be repeated')
+            '(This option can be repeated.)')
         parser.add_argument(
             '--fixed_ip',
             action='append',
             help=argparse.SUPPRESS)
         parser.add_argument(
-            'network_id', metavar='network',
+            '--security-group', metavar='SECURITY_GROUP',
+            default=[], action='append', dest='security_groups',
+            help='security group associated with the port '
+            '(This option can be repeated)')
+        parser.add_argument(
+            'network_id', metavar='NETWORK',
             help='Network id or name this port belongs to')
 
     def args2body(self, parsed_args):
@@ -119,6 +152,14 @@ class CreatePort(CreateCommand):
                 ips.append(ip_dict)
         if ips:
             body['port'].update({'fixed_ips': ips})
+
+        _sgids = []
+        for sg in parsed_args.security_groups:
+            _sgids.append(quantumv20.find_resourceid_by_name_or_id(
+                self.get_client(), 'security_group', sg))
+        if _sgids:
+            body['port']['security_groups'] = _sgids
+
         return body
 
 
@@ -134,3 +175,15 @@ class UpdatePort(UpdateCommand):
 
     resource = 'port'
     log = logging.getLogger(__name__ + '.UpdatePort')
+
+    def add_known_arguments(self, parser):
+        parser.add_argument(
+            '--no-security-groups',
+            default=False, action='store_true',
+            help='remove security groups from port')
+
+    def args2body(self, parsed_args):
+        body = {'port': {}}
+        if parsed_args.no_security_groups:
+            body['port'].update({'security_groups': None})
+        return body

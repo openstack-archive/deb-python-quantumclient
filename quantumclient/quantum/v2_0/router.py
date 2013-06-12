@@ -42,6 +42,8 @@ class ListRouter(ListCommand):
     log = logging.getLogger(__name__ + '.ListRouter')
     _formatters = {'external_gateway_info': _format_external_gateway_info, }
     list_columns = ['id', 'name', 'external_gateway_info']
+    pagination_support = True
+    sorting_support = True
 
 
 class ShowRouter(ShowCommand):
@@ -56,6 +58,7 @@ class CreateRouter(CreateCommand):
 
     resource = 'router'
     log = logging.getLogger(__name__ + '.CreateRouter')
+    _formatters = {'external_gateway_info': _format_external_gateway_info, }
 
     def add_known_arguments(self, parser):
         parser.add_argument(
@@ -67,7 +70,7 @@ class CreateRouter(CreateCommand):
             action='store_false',
             help=argparse.SUPPRESS)
         parser.add_argument(
-            'name', metavar='name',
+            'name', metavar='NAME',
             help='Name of router to create')
 
     def args2body(self, parsed_args):

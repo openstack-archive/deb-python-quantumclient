@@ -34,6 +34,8 @@ class ListFloatingIP(ListCommand):
     _formatters = {}
     list_columns = ['id', 'fixed_ip_address', 'floating_ip_address',
                     'port_id']
+    pagination_support = True
+    sorting_support = True
 
 
 class ShowFloatingIP(ShowCommand):
@@ -52,8 +54,8 @@ class CreateFloatingIP(CreateCommand):
 
     def add_known_arguments(self, parser):
         parser.add_argument(
-            'floating_network_id',
-            help='Network to allocate floating IP from')
+            'floating_network_id', metavar='FLOATING_NETWORK',
+            help='Network name or id to allocate floating IP from')
         parser.add_argument(
             '--port-id',
             help='ID of the port to be associated with the floatingip')
@@ -100,11 +102,11 @@ class AssociateFloatingIP(QuantumCommand):
     def get_parser(self, prog_name):
         parser = super(AssociateFloatingIP, self).get_parser(prog_name)
         parser.add_argument(
-            'floatingip_id', metavar='floatingip-id',
-            help='IP address of the floating IP to associate')
+            'floatingip_id', metavar='FLOATINGIP_ID',
+            help='ID of the floating IP to associate')
         parser.add_argument(
-            'port_id',
-            help='ID of the port to be associated with the floatingip')
+            'port_id', metavar='PORT',
+            help='ID or name of the port to be associated with the floatingip')
         parser.add_argument(
             '--fixed-ip-address',
             help=('IP address on the port (only required if port has multiple'
@@ -140,8 +142,8 @@ class DisassociateFloatingIP(QuantumCommand):
     def get_parser(self, prog_name):
         parser = super(DisassociateFloatingIP, self).get_parser(prog_name)
         parser.add_argument(
-            'floatingip_id', metavar='floatingip-id',
-            help='IP address of the floating IP to associate')
+            'floatingip_id', metavar='FLOATINGIP_ID',
+            help='ID of the floating IP to associate')
         return parser
 
     def run(self, parsed_args):

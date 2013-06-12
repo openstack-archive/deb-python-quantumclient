@@ -19,10 +19,14 @@ import httplib
 import logging
 import time
 import urllib
+import urlparse
 
 from quantumclient.client import HTTPClient
+from quantumclient.common import _
+from quantumclient.common import constants
 from quantumclient.common import exceptions
-from quantumclient.common.serializer import Serializer
+from quantumclient.common import serializer
+
 
 _logger = logging.getLogger(__name__)
 
@@ -72,7 +76,8 @@ def exception_handler_v20(status_code, error_content):
             if ex:
                 raise ex
         else:
-            raise exceptions.QuantumClientException(message=error_dict)
+            raise exceptions.QuantumClientException(status_code=status_code,
+                                                    message=error_dict)
     else:
         message = None
         if isinstance(error_content, dict):
@@ -131,22 +136,10 @@ class Client(object):
                                      tenant_name=TENANT_NAME,
                                      auth_url=KEYSTONE_URL)
 
-        >>> nets = quantum.list_nets()
+        >>> nets = quantum.list_networks()
         ...
 
     """
-
-    #Metadata for deserializing xml
-    _serialization_metadata = {
-        "application/xml": {
-            "attributes": {
-                "network": ["id", "name"],
-                "port": ["id", "mac_address"],
-                "subnet": ["id", "prefix"]},
-            "plurals": {
-                "networks": "network",
-                "ports": "port",
-                "subnets": "subnet", }, }, }
 
     networks_path = "/networks"
     network_path = "/networks/%s"
@@ -162,6 +155,59 @@ class Client(object):
     router_path = "/routers/%s"
     floatingips_path = "/floatingips"
     floatingip_path = "/floatingips/%s"
+    security_groups_path = "/security-groups"
+    security_group_path = "/security-groups/%s"
+    security_group_rules_path = "/security-group-rules"
+    security_group_rule_path = "/security-group-rules/%s"
+    vips_path = "/lb/vips"
+    vip_path = "/lb/vips/%s"
+    pools_path = "/lb/pools"
+    pool_path = "/lb/pools/%s"
+    pool_path_stats = "/lb/pools/%s/stats"
+    members_path = "/lb/members"
+    member_path = "/lb/members/%s"
+    health_monitors_path = "/lb/health_monitors"
+    health_monitor_path = "/lb/health_monitors/%s"
+    associate_pool_health_monitors_path = "/lb/pools/%s/health_monitors"
+    disassociate_pool_health_monitors_path = (
+        "/lb/pools/%(pool)s/health_monitors/%(health_monitor)s")
+    qos_queues_path = "/qos-queues"
+    qos_queue_path = "/qos-queues/%s"
+    agents_path = "/agents"
+    agent_path = "/agents/%s"
+    network_gateways_path = "/network-gateways"
+    network_gateway_path = "/network-gateways/%s"
+
+    DHCP_NETS = '/dhcp-networks'
+    DHCP_AGENTS = '/dhcp-agents'
+    L3_ROUTERS = '/l3-routers'
+    L3_AGENTS = '/l3-agents'
+    # API has no way to report plurals, so we have to hard code them
+    EXTED_PLURALS = {'routers': 'router',
+                     'floatingips': 'floatingip',
+                     'service_types': 'service_type',
+                     'service_definitions': 'service_definition',
+                     'security_groups': 'security_group',
+                     'security_group_rules': 'security_group_rule',
+                     'vips': 'vip',
+                     'pools': 'pool',
+                     'members': 'member',
+                     'health_monitors': 'health_monitor',
+                     'quotas': 'quota',
+                     }
+
+    def get_attr_metadata(self):
+        if self.format == 'json':
+            return {}
+        old_request_format = self.format
+        self.format = 'json'
+        exts = self.list_extensions()['extensions']
+        self.format = old_request_format
+        ns = dict([(ext['alias'], ext['namespace']) for ext in exts])
+        self.EXTED_PLURALS.update(constants.PLURALS)
+        return {'plurals': self.EXTED_PLURALS,
+                'xmlns': constants.XML_NS_V20,
+                constants.EXT_NS: ns}
 
     @APIParamsCall
     def get_quotas_tenant(self, **_params):
@@ -200,12 +246,13 @@ class Client(object):
         return self.get(self.ext_path % ext_alias, params=_params)
 
     @APIParamsCall
-    def list_ports(self, **_params):
+    def list_ports(self, retrieve_all=True, **_params):
         """
         Fetches a list of all networks for a tenant
         """
         # Pass filters in "params" argument to do_request
-        return self.get(self.ports_path, params=_params)
+        return self.list('ports', self.ports_path, retrieve_all,
+                         **_params)
 
     @APIParamsCall
     def show_port(self, port, **_params):
@@ -236,12 +283,13 @@ class Client(object):
         return self.delete(self.port_path % (port))
 
     @APIParamsCall
-    def list_networks(self, **_params):
+    def list_networks(self, retrieve_all=True, **_params):
         """
         Fetches a list of all networks for a tenant
         """
         # Pass filters in "params" argument to do_request
-        return self.get(self.networks_path, params=_params)
+        return self.list('networks', self.networks_path, retrieve_all,
+                         **_params)
 
     @APIParamsCall
     def show_network(self, network, **_params):
@@ -272,11 +320,12 @@ class Client(object):
         return self.delete(self.network_path % (network))
 
     @APIParamsCall
-    def list_subnets(self, **_params):
+    def list_subnets(self, retrieve_all=True, **_params):
         """
         Fetches a list of all networks for a tenant
         """
-        return self.get(self.subnets_path, params=_params)
+        return self.list('subnets', self.subnets_path, retrieve_all,
+                         **_params)
 
     @APIParamsCall
     def show_subnet(self, subnet, **_params):
@@ -307,12 +356,13 @@ class Client(object):
         return self.delete(self.subnet_path % (subnet))
 
     @APIParamsCall
-    def list_routers(self, **_params):
+    def list_routers(self, retrieve_all=True, **_params):
         """
         Fetches a list of all routers for a tenant
         """
         # Pass filters in "params" argument to do_request
-        return self.get(self.routers_path, params=_params)
+        return self.list('routers', self.routers_path, retrieve_all,
+                         **_params)
 
     @APIParamsCall
     def show_router(self, router, **_params):
@@ -375,12 +425,13 @@ class Client(object):
                         body={'router': {'external_gateway_info': {}}})
 
     @APIParamsCall
-    def list_floatingips(self, **_params):
+    def list_floatingips(self, retrieve_all=True, **_params):
         """
         Fetches a list of all floatingips for a tenant
         """
         # Pass filters in "params" argument to do_request
-        return self.get(self.floatingips_path, params=_params)
+        return self.list('floatingips', self.floatingips_path, retrieve_all,
+                         **_params)
 
     @APIParamsCall
     def show_floatingip(self, floatingip, **_params):
@@ -410,6 +461,414 @@ class Client(object):
         """
         return self.delete(self.floatingip_path % (floatingip))
 
+    @APIParamsCall
+    def create_security_group(self, body=None):
+        """
+        Creates a new security group
+        """
+        return self.post(self.security_groups_path, body=body)
+
+    @APIParamsCall
+    def list_security_groups(self, retrieve_all=True, **_params):
+        """
+        Fetches a list of all security groups for a tenant
+        """
+        return self.list('security_groups', self.security_groups_path,
+                         retrieve_all, **_params)
+
+    @APIParamsCall
+    def show_security_group(self, security_group, **_params):
+        """
+        Fetches information of a certain security group
+        """
+        return self.get(self.security_group_path % (security_group),
+                        params=_params)
+
+    @APIParamsCall
+    def delete_security_group(self, security_group):
+        """
+        Deletes the specified security group
+        """
+        return self.delete(self.security_group_path % (security_group))
+
+    @APIParamsCall
+    def create_security_group_rule(self, body=None):
+        """
+        Creates a new security group rule
+        """
+        return self.post(self.security_group_rules_path, body=body)
+
+    @APIParamsCall
+    def delete_security_group_rule(self, security_group_rule):
+        """
+        Deletes the specified security group rule
+        """
+        return self.delete(self.security_group_rule_path %
+                           (security_group_rule))
+
+    @APIParamsCall
+    def list_security_group_rules(self, retrieve_all=True, **_params):
+        """
+        Fetches a list of all security group rules for a tenant
+        """
+        return self.list('security_group_rules',
+                         self.security_group_rules_path,
+                         retrieve_all, **_params)
+
+    @APIParamsCall
+    def show_security_group_rule(self, security_group_rule, **_params):
+        """
+        Fetches information of a certain security group rule
+        """
+        return self.get(self.security_group_rule_path % (security_group_rule),
+                        params=_params)
+
+    @APIParamsCall
+    def list_vips(self, retrieve_all=True, **_params):
+        """
+        Fetches a list of all load balancer vips for a tenant
+        """
+        # Pass filters in "params" argument to do_request
+        return self.list('vips', self.vips_path, retrieve_all,
+                         **_params)
+
+    @APIParamsCall
+    def show_vip(self, vip, **_params):
+        """
+        Fetches information of a certain load balancer vip
+        """
+        return self.get(self.vip_path % (vip), params=_params)
+
+    @APIParamsCall
+    def create_vip(self, body=None):
+        """
+        Creates a new load balancer vip
+        """
+        return self.post(self.vips_path, body=body)
+
+    @APIParamsCall
+    def update_vip(self, vip, body=None):
+        """
+        Updates a load balancer vip
+        """
+        return self.put(self.vip_path % (vip), body=body)
+
+    @APIParamsCall
+    def delete_vip(self, vip):
+        """
+        Deletes the specified load balancer vip
+        """
+        return self.delete(self.vip_path % (vip))
+
+    @APIParamsCall
+    def list_pools(self, retrieve_all=True, **_params):
+        """
+        Fetches a list of all load balancer pools for a tenant
+        """
+        # Pass filters in "params" argument to do_request
+        return self.list('pools', self.pools_path, retrieve_all,
+                         **_params)
+
+    @APIParamsCall
+    def show_pool(self, pool, **_params):
+        """
+        Fetches information of a certain load balancer pool
+        """
+        return self.get(self.pool_path % (pool), params=_params)
+
+    @APIParamsCall
+    def create_pool(self, body=None):
+        """
+        Creates a new load balancer pool
+        """
+        return self.post(self.pools_path, body=body)
+
+    @APIParamsCall
+    def update_pool(self, pool, body=None):
+        """
+        Updates a load balancer pool
+        """
+        return self.put(self.pool_path % (pool), body=body)
+
+    @APIParamsCall
+    def delete_pool(self, pool):
+        """
+        Deletes the specified load balancer pool
+        """
+        return self.delete(self.pool_path % (pool))
+
+    @APIParamsCall
+    def retrieve_pool_stats(self, pool, **_params):
+        """
+        Retrieves stats for a certain load balancer pool
+        """
+        return self.get(self.pool_path_stats % (pool), params=_params)
+
+    @APIParamsCall
+    def list_members(self, retrieve_all=True, **_params):
+        """
+        Fetches a list of all load balancer members for a tenant
+        """
+        # Pass filters in "params" argument to do_request
+        return self.list('members', self.members_path, retrieve_all,
+                         **_params)
+
+    @APIParamsCall
+    def show_member(self, member, **_params):
+        """
+        Fetches information of a certain load balancer member
+        """
+        return self.get(self.member_path % (member), params=_params)
+
+    @APIParamsCall
+    def create_member(self, body=None):
+        """
+        Creates a new load balancer member
+        """
+        return self.post(self.members_path, body=body)
+
+    @APIParamsCall
+    def update_member(self, member, body=None):
+        """
+        Updates a load balancer member
+        """
+        return self.put(self.member_path % (member), body=body)
+
+    @APIParamsCall
+    def delete_member(self, member):
+        """
+        Deletes the specified load balancer member
+        """
+        return self.delete(self.member_path % (member))
+
+    @APIParamsCall
+    def list_health_monitors(self, retrieve_all=True, **_params):
+        """
+        Fetches a list of all load balancer health monitors for a tenant
+        """
+        # Pass filters in "params" argument to do_request
+        return self.list('health_monitors', self.health_monitors_path,
+                         retrieve_all, **_params)
+
+    @APIParamsCall
+    def show_health_monitor(self, health_monitor, **_params):
+        """
+        Fetches information of a certain load balancer health monitor
+        """
+        return self.get(self.health_monitor_path % (health_monitor),
+                        params=_params)
+
+    @APIParamsCall
+    def create_health_monitor(self, body=None):
+        """
+        Creates a new load balancer health monitor
+        """
+        return self.post(self.health_monitors_path, body=body)
+
+    @APIParamsCall
+    def update_health_monitor(self, health_monitor, body=None):
+        """
+        Updates a load balancer health monitor
+        """
+        return self.put(self.health_monitor_path % (health_monitor), body=body)
+
+    @APIParamsCall
+    def delete_health_monitor(self, health_monitor):
+        """
+        Deletes the specified load balancer health monitor
+        """
+        return self.delete(self.health_monitor_path % (health_monitor))
+
+    @APIParamsCall
+    def associate_health_monitor(self, pool, body):
+        """
+        Associate  specified load balancer health monitor and pool
+        """
+        return self.post(self.associate_pool_health_monitors_path % (pool),
+                         body=body)
+
+    @APIParamsCall
+    def disassociate_health_monitor(self, pool, health_monitor):
+        """
+        Disassociate specified load balancer health monitor and pool
+        """
+        path = (self.disassociate_pool_health_monitors_path %
+                {'pool': pool, 'health_monitor': health_monitor})
+        return self.delete(path)
+
+    @APIParamsCall
+    def create_qos_queue(self, body=None):
+        """
+        Creates a new queue
+        """
+        return self.post(self.qos_queues_path, body=body)
+
+    @APIParamsCall
+    def list_qos_queues(self, **_params):
+        """
+        Fetches a list of all queues for a tenant
+        """
+        return self.get(self.qos_queues_path, params=_params)
+
+    @APIParamsCall
+    def show_qos_queue(self, queue, **_params):
+        """
+        Fetches information of a certain queue
+        """
+        return self.get(self.qos_queue_path % (queue),
+                        params=_params)
+
+    @APIParamsCall
+    def delete_qos_queue(self, queue):
+        """
+        Deletes the specified queue
+        """
+        return self.delete(self.qos_queue_path % (queue))
+
+    @APIParamsCall
+    def list_agents(self, **_params):
+        """
+        Fetches agents
+        """
+        # Pass filters in "params" argument to do_request
+        return self.get(self.agents_path, params=_params)
+
+    @APIParamsCall
+    def show_agent(self, agent, **_params):
+        """
+        Fetches information of a certain agent
+        """
+        return self.get(self.agent_path % (agent), params=_params)
+
+    @APIParamsCall
+    def update_agent(self, agent, body=None):
+        """
+        Updates an agent
+        """
+        return self.put(self.agent_path % (agent), body=body)
+
+    @APIParamsCall
+    def delete_agent(self, agent):
+        """
+        Deletes the specified agent
+        """
+        return self.delete(self.agent_path % (agent))
+
+    @APIParamsCall
+    def list_network_gateways(self, **_params):
+        """
+        Retrieve network gateways
+        """
+        return self.get(self.network_gateways_path, params=_params)
+
+    @APIParamsCall
+    def show_network_gateway(self, gateway_id, **_params):
+        """
+        Fetch a network gateway
+        """
+        return self.get(self.network_gateway_path % gateway_id, params=_params)
+
+    @APIParamsCall
+    def create_network_gateway(self, body=None):
+        """
+        Create a new network gateway
+        """
+        return self.post(self.network_gateways_path, body=body)
+
+    @APIParamsCall
+    def update_network_gateway(self, gateway_id, body=None):
+        """
+        Update a network gateway
+        """
+        return self.put(self.network_gateway_path % gateway_id, body=body)
+
+    @APIParamsCall
+    def delete_network_gateway(self, gateway_id):
+        """
+        Delete the specified network gateway
+        """
+        return self.delete(self.network_gateway_path % gateway_id)
+
+    @APIParamsCall
+    def connect_network_gateway(self, gateway_id, body=None):
+        """
+        Connect a network gateway to the specified network
+        """
+        base_uri = self.network_gateway_path % gateway_id
+        return self.put("%s/connect_network" % base_uri, body=body)
+
+    @APIParamsCall
+    def disconnect_network_gateway(self, gateway_id, body=None):
+        """
+        Disconnect a network from the specified gateway
+        """
+        base_uri = self.network_gateway_path % gateway_id
+        return self.put("%s/disconnect_network" % base_uri, body=body)
+
+    @APIParamsCall
+    def list_dhcp_agent_hosting_networks(self, network, **_params):
+        """
+        Fetches a list of dhcp agents hosting a network.
+        """
+        return self.get((self.network_path + self.DHCP_AGENTS) % network,
+                        params=_params)
+
+    @APIParamsCall
+    def list_networks_on_dhcp_agent(self, dhcp_agent, **_params):
+        """
+        Fetches a list of dhcp agents hosting a network.
+        """
+        return self.get((self.agent_path + self.DHCP_NETS) % dhcp_agent,
+                        params=_params)
+
+    @APIParamsCall
+    def add_network_to_dhcp_agent(self, dhcp_agent, body=None):
+        """
+        Adds a network to dhcp agent.
+        """
+        return self.post((self.agent_path + self.DHCP_NETS) % dhcp_agent,
+                         body=body)
+
+    @APIParamsCall
+    def remove_network_from_dhcp_agent(self, dhcp_agent, network_id):
+        """
+        Remove a network from dhcp agent.
+        """
+        return self.delete((self.agent_path + self.DHCP_NETS + "/%s") % (
+            dhcp_agent, network_id))
+
+    @APIParamsCall
+    def list_l3_agent_hosting_routers(self, router, **_params):
+        """
+        Fetches a list of L3 agents hosting a router.
+        """
+        return self.get((self.router_path + self.L3_AGENTS) % router,
+                        params=_params)
+
+    @APIParamsCall
+    def list_routers_on_l3_agent(self, l3_agent, **_params):
+        """
+        Fetches a list of L3 agents hosting a router.
+        """
+        return self.get((self.agent_path + self.L3_ROUTERS) % l3_agent,
+                        params=_params)
+
+    @APIParamsCall
+    def add_router_to_l3_agent(self, l3_agent, body):
+        """
+        Adds a router to L3 agent.
+        """
+        return self.post((self.agent_path + self.L3_ROUTERS) % l3_agent,
+                         body=body)
+
+    @APIParamsCall
+    def remove_router_from_l3_agent(self, l3_agent, router_id):
+        """
+        Remove a router from l3 agent.
+        """
+        return self.delete((self.agent_path + self.L3_ROUTERS + "/%s") % (
+            l3_agent, router_id))
+
     def __init__(self, **kwargs):
         """ Initialize a new client for the Quantum v2.0 API. """
         super(Client, self).__init__()
@@ -422,16 +881,14 @@ class Client(object):
 
     def _handle_fault_response(self, status_code, response_body):
         # Create exception with HTTP status code and message
-        error_message = response_body
-        _logger.debug("Error message: %s", error_message)
+        _logger.debug("Error message: %s", response_body)
         # Add deserialized error message to exception arguments
         try:
-            des_error_body = Serializer().deserialize(error_message,
-                                                      self.content_type())
+            des_error_body = self.deserialize(response_body, status_code)
         except:
             # If unable to deserialized body it is probably not a
             # Quantum error
-            des_error_body = {'message': error_message}
+            des_error_body = {'message': response_body}
         # Raise the appropriate exception
         exception_handler_v20(status_code, des_error_body)
 
@@ -472,7 +929,8 @@ class Client(object):
         if data is None:
             return None
         elif type(data) is dict:
-            return Serializer().serialize(data, self.content_type())
+            return serializer.Serializer(
+                self.get_attr_metadata()).serialize(data, self.content_type())
         else:
             raise Exception("unable to serialize object of type = '%s'" %
                             type(data))
@@ -483,17 +941,16 @@ class Client(object):
         """
         if status_code == 204:
             return data
-        return Serializer(self._serialization_metadata).deserialize(
-            data, self.content_type())
+        return serializer.Serializer(self.get_attr_metadata()).deserialize(
+            data, self.content_type())['body']
 
-    def content_type(self, format=None):
+    def content_type(self, _format=None):
         """
         Returns the mime-type for either 'xml' or 'json'.  Defaults to the
         currently set format
         """
-        if not format:
-            format = self.format
-        return "application/%s" % (format)
+        _format = _format or self.format
+        return "application/%s" % (_format)
 
     def retry_request(self, method, action, body=None,
                       headers=None, params=None):
@@ -533,16 +990,31 @@ class Client(object):
         return self.retry_request("PUT", action, body=body,
                                   headers=headers, params=params)
 
-#if __name__ == '__main__':
-#
-#    client20 = Client(username='admin',
-#                      password='password',
-#                      auth_url='http://localhost:5000/v2.0',
-#                      tenant_name='admin')
-#    client20 = Client(token='ec796583fcad4aa690b723bc0b25270e',
-#                      endpoint_url='http://localhost:9696')
-#
-#    client20.tenant = 'default'
-#    client20.format = 'json'
-#    nets = client20.list_networks()
-#    print nets
+    def list(self, collection, path, retrieve_all=True, **params):
+        if retrieve_all:
+            res = []
+            for r in self._pagination(collection, path, **params):
+                res.extend(r[collection])
+            return {collection: res}
+        else:
+            return self._pagination(collection, path, **params)
+
+    def _pagination(self, collection, path, **params):
+        if params.get('page_reverse', False):
+            linkrel = 'previous'
+        else:
+            linkrel = 'next'
+        next = True
+        while next:
+            res = self.get(path, params=params)
+            yield res
+            next = False
+            try:
+                for link in res['%s_links' % collection]:
+                    if link['rel'] == linkrel:
+                        query_str = urlparse.urlparse(link['href']).query
+                        params = urlparse.parse_qs(query_str)
+                        next = True
+                        break
+            except KeyError:
+                break

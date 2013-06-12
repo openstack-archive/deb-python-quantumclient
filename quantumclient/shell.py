@@ -18,6 +18,7 @@
 """
 Command-line interface to the Quantum APIs
 """
+
 import argparse
 import gettext
 import logging
@@ -32,9 +33,21 @@ from quantumclient.common import exceptions as exc
 from quantumclient.common import utils
 
 
-gettext.install('quantum', unicode=1)
 VERSION = '2.0'
 QUANTUM_API_VERSION = '2.0'
+
+
+def run_command(cmd, cmd_parser, sub_argv):
+    _argv = sub_argv
+    index = -1
+    values_specs = []
+    if '--' in sub_argv:
+        index = sub_argv.index('--')
+        _argv = sub_argv[:index]
+        values_specs = sub_argv[index:]
+    known_args, _values_specs = cmd_parser.parse_known_args(_argv)
+    cmd.values_specs = (index == -1 and _values_specs or values_specs)
+    return cmd.run(known_args)
 
 
 def env(*_vars, **kwargs):
@@ -54,6 +67,8 @@ def env(*_vars, **kwargs):
 COMMAND_V2 = {
     'net-list': utils.import_class(
         'quantumclient.quantum.v2_0.network.ListNetwork'),
+    'net-external-list': utils.import_class(
+        'quantumclient.quantum.v2_0.network.ListExternalNetwork'),
     'net-show': utils.import_class(
         'quantumclient.quantum.v2_0.network.ShowNetwork'),
     'net-create': utils.import_class(
@@ -96,6 +111,8 @@ COMMAND_V2 = {
         'quantumclient.quantum.v2_0.extension.ShowExt'),
     'router-list': utils.import_class(
         'quantumclient.quantum.v2_0.router.ListRouter'),
+    'router-port-list': utils.import_class(
+        'quantumclient.quantum.v2_0.port.ListRouterPort'),
     'router-show': utils.import_class(
         'quantumclient.quantum.v2_0.router.ShowRouter'),
     'router-create': utils.import_class(
@@ -124,6 +141,119 @@ COMMAND_V2 = {
         'quantumclient.quantum.v2_0.floatingip.AssociateFloatingIP'),
     'floatingip-disassociate': utils.import_class(
         'quantumclient.quantum.v2_0.floatingip.DisassociateFloatingIP'),
+    'security-group-list': utils.import_class(
+        'quantumclient.quantum.v2_0.securitygroup.ListSecurityGroup'),
+    'security-group-show': utils.import_class(
+        'quantumclient.quantum.v2_0.securitygroup.ShowSecurityGroup'),
+    'security-group-create': utils.import_class(
+        'quantumclient.quantum.v2_0.securitygroup.CreateSecurityGroup'),
+    'security-group-delete': utils.import_class(
+        'quantumclient.quantum.v2_0.securitygroup.DeleteSecurityGroup'),
+    'security-group-rule-list': utils.import_class(
+        'quantumclient.quantum.v2_0.securitygroup.ListSecurityGroupRule'),
+    'security-group-rule-show': utils.import_class(
+        'quantumclient.quantum.v2_0.securitygroup.ShowSecurityGroupRule'),
+    'security-group-rule-create': utils.import_class(
+        'quantumclient.quantum.v2_0.securitygroup.CreateSecurityGroupRule'),
+    'security-group-rule-delete': utils.import_class(
+        'quantumclient.quantum.v2_0.securitygroup.DeleteSecurityGroupRule'),
+    'lb-vip-list': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.vip.ListVip'),
+    'lb-vip-show': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.vip.ShowVip'),
+    'lb-vip-create': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.vip.CreateVip'),
+    'lb-vip-update': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.vip.UpdateVip'),
+    'lb-vip-delete': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.vip.DeleteVip'),
+    'lb-pool-list': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.pool.ListPool'),
+    'lb-pool-show': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.pool.ShowPool'),
+    'lb-pool-create': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.pool.CreatePool'),
+    'lb-pool-update': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.pool.UpdatePool'),
+    'lb-pool-delete': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.pool.DeletePool'),
+    'lb-pool-stats': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.pool.RetrievePoolStats'),
+    'lb-member-list': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.member.ListMember'),
+    'lb-member-show': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.member.ShowMember'),
+    'lb-member-create': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.member.CreateMember'),
+    'lb-member-update': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.member.UpdateMember'),
+    'lb-member-delete': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.member.DeleteMember'),
+    'lb-healthmonitor-list': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.healthmonitor.ListHealthMonitor'),
+    'lb-healthmonitor-show': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.healthmonitor.ShowHealthMonitor'),
+    'lb-healthmonitor-create': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.healthmonitor.CreateHealthMonitor'),
+    'lb-healthmonitor-update': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.healthmonitor.UpdateHealthMonitor'),
+    'lb-healthmonitor-delete': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.healthmonitor.DeleteHealthMonitor'),
+    'lb-healthmonitor-associate': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.healthmonitor.AssociateHealthMonitor'),
+    'lb-healthmonitor-disassociate': utils.import_class(
+        'quantumclient.quantum.v2_0.lb.healthmonitor'
+        '.DisassociateHealthMonitor'),
+    'queue-create': utils.import_class(
+        'quantumclient.quantum.v2_0.nvp_qos_queue.CreateQoSQueue'),
+    'queue-delete': utils.import_class(
+        'quantumclient.quantum.v2_0.nvp_qos_queue.DeleteQoSQueue'),
+    'queue-show': utils.import_class(
+        'quantumclient.quantum.v2_0.nvp_qos_queue.ShowQoSQueue'),
+    'queue-list': utils.import_class(
+        'quantumclient.quantum.v2_0.nvp_qos_queue.ListQoSQueue'),
+    'agent-list': utils.import_class(
+        'quantumclient.quantum.v2_0.agent.ListAgent'),
+    'agent-show': utils.import_class(
+        'quantumclient.quantum.v2_0.agent.ShowAgent'),
+    'agent-delete': utils.import_class(
+        'quantumclient.quantum.v2_0.agent.DeleteAgent'),
+    'agent-update': utils.import_class(
+        'quantumclient.quantum.v2_0.agent.UpdateAgent'),
+    'net-gateway-create': utils.import_class(
+        'quantumclient.quantum.v2_0.nvpnetworkgateway.CreateNetworkGateway'),
+    'net-gateway-update': utils.import_class(
+        'quantumclient.quantum.v2_0.nvpnetworkgateway.UpdateNetworkGateway'),
+    'net-gateway-delete': utils.import_class(
+        'quantumclient.quantum.v2_0.nvpnetworkgateway.DeleteNetworkGateway'),
+    'net-gateway-show': utils.import_class(
+        'quantumclient.quantum.v2_0.nvpnetworkgateway.ShowNetworkGateway'),
+    'net-gateway-list': utils.import_class(
+        'quantumclient.quantum.v2_0.nvpnetworkgateway.ListNetworkGateway'),
+    'net-gateway-connect': utils.import_class(
+        'quantumclient.quantum.v2_0.nvpnetworkgateway.ConnectNetworkGateway'),
+    'net-gateway-disconnect': utils.import_class(
+        'quantumclient.quantum.v2_0.nvpnetworkgateway.'
+        'DisconnectNetworkGateway'),
+    'dhcp-agent-network-add': utils.import_class(
+        'quantumclient.quantum.v2_0.agentscheduler.AddNetworkToDhcpAgent'),
+    'dhcp-agent-network-remove': utils.import_class(
+        'quantumclient.quantum.v2_0.agentscheduler.'
+        'RemoveNetworkFromDhcpAgent'),
+    'net-list-on-dhcp-agent': utils.import_class(
+        'quantumclient.quantum.v2_0.agentscheduler.'
+        'ListNetworksOnDhcpAgent'),
+    'dhcp-agent-list-hosting-net': utils.import_class(
+        'quantumclient.quantum.v2_0.agentscheduler.'
+        'ListDhcpAgentsHostingNetwork'),
+    'l3-agent-router-add': utils.import_class(
+        'quantumclient.quantum.v2_0.agentscheduler.AddRouterToL3Agent'),
+    'l3-agent-router-remove': utils.import_class(
+        'quantumclient.quantum.v2_0.agentscheduler.RemoveRouterFromL3Agent'),
+    'router-list-on-l3-agent': utils.import_class(
+        'quantumclient.quantum.v2_0.agentscheduler.ListRoutersOnL3Agent'),
+    'l3-agent-list-hosting-router': utils.import_class(
+        'quantumclient.quantum.v2_0.agentscheduler.ListL3AgentsHostingRouter'),
 }
 
 COMMANDS = {'2.0': COMMAND_V2}
@@ -137,6 +267,8 @@ class HelpAction(argparse.Action):
     instance, passed in as the "default" value for the action.
     """
     def __call__(self, parser, namespace, values, option_string=None):
+        outputs = []
+        max_len = 0
         app = self.default
         parser.print_help(app.stdout)
         app.stdout.write('\nCommands for API v%s:\n' % app.api_version)
@@ -145,7 +277,10 @@ class HelpAction(argparse.Action):
             factory = ep.load()
             cmd = factory(self, None)
             one_liner = cmd.get_description().split('\n')[0]
-            app.stdout.write('  %-25s  %s\n' % (name, one_liner))
+            outputs.append((name, one_liner))
+            max_len = max(len(name), max_len)
+        for (name, one_liner) in outputs:
+            app.stdout.write('  %s  %s\n' % (name.ljust(max_len), one_liner))
         sys.exit(0)
 
 
@@ -160,7 +295,8 @@ class QuantumShell(App):
             description=__doc__.strip(),
             version=VERSION,
             command_manager=CommandManager('quantum.cli'), )
-        for k, v in COMMANDS[apiversion].items():
+        self.commands = COMMANDS
+        for k, v in self.commands[apiversion].items():
             self.command_manager.add_command(k, v)
 
         # This is instantiated in initialize_app() only when using
@@ -276,7 +412,34 @@ class QuantumShell(App):
             '--os_url',
             help=argparse.SUPPRESS)
 
+        parser.add_argument(
+            '--insecure',
+            action='store_true',
+            default=env('QUANTUMCLIENT_INSECURE', default=False),
+            help="Explicitly allow quantumclient to perform \"insecure\" "
+                 "SSL (https) requests. The server's certificate will "
+                 "not be verified against any certificate authorities. "
+                 "This option should be used with caution.")
+
         return parser
+
+    def _bash_completion(self):
+        """
+        Prints all of the commands and options to stdout so that the
+        quantum's bash-completion script doesn't have to hard code them.
+        """
+        commands = set()
+        options = set()
+        for option, _action in self.parser._option_string_actions.items():
+            options.add(option)
+        for command_name, command in self.command_manager:
+            commands.add(command_name)
+            cmd_factory = command.load()
+            cmd = cmd_factory(self, None)
+            cmd_parser = cmd.get_parser('')
+            for option, _action in cmd_parser._option_string_actions.items():
+                options.add(option)
+        print ' '.join(commands | options)
 
     def run(self, argv):
         """Equivalent to the main program for the application.
@@ -288,16 +451,25 @@ class QuantumShell(App):
             index = 0
             command_pos = -1
             help_pos = -1
+            help_command_pos = -1
             for arg in argv:
-                if arg in COMMANDS[self.api_version]:
+                if arg == 'bash-completion':
+                    self._bash_completion()
+                    return 0
+                if arg in self.commands[self.api_version]:
                     if command_pos == -1:
                         command_pos = index
                 elif arg in ('-h', '--help'):
                     if help_pos == -1:
                         help_pos = index
+                elif arg == 'help':
+                    if help_command_pos == -1:
+                        help_command_pos = index
                 index = index + 1
             if command_pos > -1 and help_pos > command_pos:
                 argv = ['help', argv[command_pos]]
+            if help_command_pos > -1 and command_pos == -1:
+                argv[help_command_pos] = '--help'
             self.options, remainder = self.parser.parse_known_args(argv)
             self.configure_logging()
             self.interactive_mode = not remainder
@@ -316,6 +488,44 @@ class QuantumShell(App):
             result = self.interact()
         else:
             result = self.run_subcommand(remainder)
+        return result
+
+    def run_subcommand(self, argv):
+        subcommand = self.command_manager.find_command(argv)
+        cmd_factory, cmd_name, sub_argv = subcommand
+        cmd = cmd_factory(self, self.options)
+        err = None
+        result = 1
+        try:
+            self.prepare_to_run_command(cmd)
+            full_name = (cmd_name
+                         if self.interactive_mode
+                         else ' '.join([self.NAME, cmd_name])
+                         )
+            cmd_parser = cmd.get_parser(full_name)
+            return run_command(cmd, cmd_parser, sub_argv)
+        except Exception as err:
+            if self.options.debug:
+                self.log.exception(err)
+            else:
+                self.log.error(err)
+            try:
+                self.clean_up(cmd, result, err)
+            except Exception as err2:
+                if self.options.debug:
+                    self.log.exception(err2)
+                else:
+                    self.log.error('Could not clean up: %s', err2)
+            if self.options.debug:
+                raise
+        else:
+            try:
+                self.clean_up(cmd, result, None)
+            except Exception as err3:
+                if self.options.debug:
+                    self.log.exception(err3)
+                else:
+                    self.log.error('Could not clean up: %s', err3)
         return result
 
     def authenticate_user(self):
@@ -371,7 +581,8 @@ class QuantumShell(App):
             password=self.options.os_password,
             region_name=self.options.os_region_name,
             api_version=self.api_version,
-            auth_strategy=self.options.os_auth_strategy, )
+            auth_strategy=self.options.os_auth_strategy,
+            insecure=self.options.insecure, )
         return
 
     def initialize_app(self, argv):
@@ -424,6 +635,7 @@ class QuantumShell(App):
 
 
 def main(argv=sys.argv[1:]):
+    gettext.install('quantumclient', unicode=1)
     try:
         return QuantumShell(QUANTUM_API_VERSION).run(argv)
     except exc.QuantumClientException:

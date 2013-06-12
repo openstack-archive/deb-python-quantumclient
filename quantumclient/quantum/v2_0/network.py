@@ -18,16 +18,18 @@
 import argparse
 import logging
 
+from quantumclient.common import utils
 from quantumclient.quantum.v2_0 import CreateCommand
 from quantumclient.quantum.v2_0 import DeleteCommand
 from quantumclient.quantum.v2_0 import ListCommand
-from quantumclient.quantum.v2_0 import UpdateCommand
 from quantumclient.quantum.v2_0 import ShowCommand
+from quantumclient.quantum.v2_0 import UpdateCommand
 
 
 def _format_subnets(network):
     try:
-        return '\n'.join(network['subnets'])
+        return '\n'.join([' '.join([s['id'], s.get('cidr', '')])
+                          for s in network['subnets']])
     except Exception:
         return ''
 
@@ -39,6 +41,42 @@ class ListNetwork(ListCommand):
     log = logging.getLogger(__name__ + '.ListNetwork')
     _formatters = {'subnets': _format_subnets, }
     list_columns = ['id', 'name', 'subnets']
+    pagination_support = True
+    sorting_support = True
+
+    def extend_list(self, data, parsed_args):
+        """Add subnet information to a network list"""
+        quantum_client = self.get_client()
+        search_opts = {'fields': ['id', 'cidr']}
+        if self.pagination_support:
+            page_size = parsed_args.page_size
+            if page_size:
+                search_opts.update({'limit': page_size})
+        subnet_ids = []
+        for n in data:
+            if 'subnets' in n:
+                subnet_ids.extend(n['subnets'])
+        search_opts.update({'id': subnet_ids})
+        subnets = quantum_client.list_subnets(**search_opts).get('subnets', [])
+        subnet_dict = dict([(s['id'], s) for s in subnets])
+        for n in data:
+            if 'subnets' in n:
+                n['subnets'] = [(subnet_dict.get(s) or {"id": s})
+                                for s in n['subnets']]
+
+
+class ListExternalNetwork(ListNetwork):
+    """List external networks that belong to a given tenant"""
+
+    log = logging.getLogger(__name__ + '.ListExternalNetwork')
+    pagination_support = True
+    sorting_support = True
+
+    def retrieve_list(self, parsed_args):
+        external = '--router:external=True'
+        if external not in self.values_specs:
+            self.values_specs.append('--router:external=True')
+        return super(ListExternalNetwork, self).retrieve_list(parsed_args)
 
 
 class ShowNetwork(ShowCommand):
@@ -69,7 +107,7 @@ class CreateNetwork(CreateCommand):
             default=argparse.SUPPRESS,
             help='Set the network as shared')
         parser.add_argument(
-            'name', metavar='name',
+            'name', metavar='NAME',
             help='Name of network to create')
 
     def args2body(self, parsed_args):
