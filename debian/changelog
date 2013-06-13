@@ -1,3 +1,9 @@
+python-quantumclient (1:2.2.1-2) unstable; urgency=low
+
+  * Install the bash_completion.d file.
+
+ -- Thomas Goirand <zigo@debian.org>  Thu, 13 Jun 2013 13:36:02 +0800
+
 python-quantumclient (1:2.2.1-1) unstable; urgency=low
 
   * New upstream release.
