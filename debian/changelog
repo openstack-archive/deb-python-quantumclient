@@ -1,3 +1,9 @@
+python-quantumclient (1:2.2.1-3) UNRELEASED; urgency=low
+
+  * Removes the upstream debian/CHANGELOG file.
+
+ -- Thomas Goirand <zigo@debian.org>  Tue, 09 Jul 2013 22:38:47 +0800
+
 python-quantumclient (1:2.2.1-2) unstable; urgency=low
 
   * Install the bash_completion.d file.
