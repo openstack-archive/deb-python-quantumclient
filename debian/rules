@@ -9,6 +9,10 @@ export OSLO_PACKAGE_VERSION=$(VERSION)
 %:
 	dh $@ --with python2
 
+override_dh_auto_build:
+	echo $(VERSION) >quantumclient/versioninfo
+	dh_auto_install
+
 ifeq (,$(findstring nocheck, $(DEB_BUILD_OPTIONS)))
 override_dh_auto_test:
 	rm quantumclient/tests/unit/test_cli20_network.py

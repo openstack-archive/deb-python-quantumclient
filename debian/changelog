@@ -1,6 +1,8 @@
-python-quantumclient (1:2.2.1-3) UNRELEASED; urgency=low
+python-quantumclient (1:2.2.1-3) unstable; urgency=low
 
   * Removes the upstream debian/CHANGELOG file.
+  * Fixes the versioninfo file thing, and as a consequence, fixed the egg and
+    PKG-INFO file which had 0.0.0 instead of upstream release version.
 
  -- Thomas Goirand <zigo@debian.org>  Tue, 09 Jul 2013 22:38:47 +0800
 
