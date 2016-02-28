@@ -25,7 +25,7 @@ Build-Depends-Indep: pep8,
  python-testtools,
  python-pyparsing,
 Standards-Version: 3.9.3
-Homepage: http://launchpad.net/python-quantumclient
+Homepage: https://launchpad.net/python-quantumclient
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=openstack/python-quantumclient.git;a=summary
 Vcs-Git: git://anonscm.debian.org/openstack/python-quantumclient.git
 
