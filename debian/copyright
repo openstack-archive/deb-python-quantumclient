@@ -1,6 +1,6 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: python-quantumclient
-Source: http://github.com/openstack/python-quantumclient
+Source: https://github.com/openstack/python-quantumclient
 
 Files: *
 Copyright: 2011 Citrix Systems
