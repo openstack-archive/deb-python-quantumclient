@@ -1,0 +1,10 @@
+Code-Review+2: Carl Baldwin <carl@ecbaldwin.net>
+Code-Review+2: Armando Migliaccio <armamig@gmail.com>
+Workflow+1: Armando Migliaccio <armamig@gmail.com>
+Code-Review+1: Bradley Klein <bradley.klein@twcable.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Fri, 13 Jun 2014 21:05:16 +0000
+Reviewed-on: https://review.openstack.org/81767
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

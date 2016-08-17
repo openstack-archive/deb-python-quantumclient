@@ -1,0 +1,16 @@
+Code-Review+2: Armando Migliaccio <armamig@gmail.com>
+Code-Review+1: dekehn <dekehn@gmail.com>
+Code-Review+1: Oleg Bondarev <obondarev@mirantis.com>
+Code-Review+1: Henry Gessau <HenryG@gessau.net>
+Code-Review+1: ZhiQiang Fan <aji.zqfan@gmail.com>
+Code-Review+1: Carl Baldwin <carl@ecbaldwin.net>
+Code-Review+2: Akihiro Motoki <amotoki@gmail.com>
+Workflow+1: Akihiro Motoki <amotoki@gmail.com>
+Code-Review+1: Diane Fleming <dfleming@austin.rr.com>
+Code-Review+1: Marios Andreou <marios@redhat.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Sun, 12 Jan 2014 00:39:15 +0000
+Reviewed-on: https://review.openstack.org/63619
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

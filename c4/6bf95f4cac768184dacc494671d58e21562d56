@@ -1,0 +1,9 @@
+Code-Review+2: Armando Migliaccio <armamig@gmail.com>
+Code-Review+2: Salvatore Orlando <salv.orlando@gmail.com>
+Workflow+1: Salvatore Orlando <salv.orlando@gmail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Fri, 25 Jul 2014 21:53:05 +0000
+Reviewed-on: https://review.openstack.org/109366
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

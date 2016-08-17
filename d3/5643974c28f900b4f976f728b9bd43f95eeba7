@@ -1,0 +1,16 @@
+Code-Review+1: vikram.choudhary <vikram.choudhary@huawei.com>
+Code-Review+1: Richard Theis <rtheis@us.ibm.com>
+Code-Review+2: Akihiro Motoki <amotoki@gmail.com>
+Code-Review+2: Carl Baldwin <carl@ecbaldwin.net>
+Code-Review+1: Mohankumar <nmohankumar1011@gmail.com>
+Code-Review+1: YAMAMOTO Takashi <yamamoto@midokura.com>
+Code-Review+1: Kenji Yasui <k-yasui@ti.jp.nec.com>
+Code-Review+1: Brandon Palm <bapalm@us.ibm.com>
+Code-Review+2: Kevin Benton <kevin@benton.pub>
+Workflow+1: Kevin Benton <kevin@benton.pub>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Thu, 04 Feb 2016 10:21:56 +0000
+Reviewed-on: https://review.openstack.org/238392
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

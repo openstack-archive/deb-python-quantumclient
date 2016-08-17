@@ -1,0 +1,15 @@
+Code-Review+1: Victor Stinner <vstinner@redhat.com>
+Code-Review+1: Toshiaki Higuchi <tos-higuchi@sx.jp.nec.com>
+Code-Review+2: Akihiro Motoki <amotoki@gmail.com>
+Code-Review+1: Numan Siddique <nusiddiq@redhat.com>
+Code-Review+1: Sylvain Afchain <safchain@redhat.com>
+Code-Review+1: Takashi NATSUME <natsume.takashi@lab.ntt.co.jp>
+Code-Review+1: Édouard Thuleau <ethuleau@juniper.net>
+Code-Review+2: Kyle Mestery <mestery@mestery.com>
+Workflow+1: Kyle Mestery <mestery@mestery.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Mon, 22 Dec 2014 14:25:20 +0000
+Reviewed-on: https://review.openstack.org/116864
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

@@ -1,0 +1,9 @@
+Code-Review+2: Aaron Rosen <aaronorosen@gmail.com>
+Code-Review+2: Salvatore Orlando <salv.orlando@gmail.com>
+Workflow+1: Salvatore Orlando <salv.orlando@gmail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Fri, 25 Apr 2014 02:08:04 +0000
+Reviewed-on: https://review.openstack.org/89879
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

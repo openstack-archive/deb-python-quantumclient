@@ -1,0 +1,10 @@
+Code-Review+2: Kyle Mestery <mestery@mestery.com>
+Code-Review+1: Ramanjaneya Reddy Palleti <ramanjaneya.palleti@huawei.com>
+Code-Review+2: Akihiro Motoki <amotoki@gmail.com>
+Workflow+1: Akihiro Motoki <amotoki@gmail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Mon, 20 Jul 2015 19:46:06 +0000
+Reviewed-on: https://review.openstack.org/203140
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

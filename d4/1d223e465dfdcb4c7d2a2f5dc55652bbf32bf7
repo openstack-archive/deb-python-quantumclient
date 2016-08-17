@@ -1,0 +1,9 @@
+Code-Review+2: mark mcclain <mark@mcclain.xyz>
+Code-Review+2: gongysh <gong.yongsheng@99cloud.net>
+Workflow+1: gongysh <gong.yongsheng@99cloud.net>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Fri, 05 Apr 2013 23:51:08 +0000
+Reviewed-on: https://review.openstack.org/26244
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

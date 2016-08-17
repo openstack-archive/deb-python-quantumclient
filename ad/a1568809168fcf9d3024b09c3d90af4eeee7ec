@@ -1,0 +1,9 @@
+Code-Review+2: Kevin Benton <kevin@benton.pub>
+Code-Review+2: Aaron Rosen <aaronorosen@gmail.com>
+Workflow+1: Aaron Rosen <aaronorosen@gmail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Tue, 28 Jul 2015 08:47:42 +0000
+Reviewed-on: https://review.openstack.org/141006
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

@@ -1,0 +1,14 @@
+Code-Review+1: Gal Sagie <gal.sagie@gmail.com>
+Code-Review+1: Abhishek Raut <rauta@vmware.com>
+Code-Review+1: YAMAMOTO Takashi <yamamoto@midokura.com>
+Code-Review+1: Stephen Balukoff <stephen@balukoff.com>
+Code-Review+2: Russell Bryant <rbryant@redhat.com>
+Code-Review+2: Akihiro Motoki <amotoki@gmail.com>
+Workflow+1: Akihiro Motoki <amotoki@gmail.com>
+Code-Review+1: Edgar Magana <emagana@gmail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Tue, 15 Sep 2015 16:43:47 +0000
+Reviewed-on: https://review.openstack.org/202089
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

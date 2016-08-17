@@ -1,0 +1,9 @@
+Code-Review+2: Ihar Hrachyshka <ihrachys@redhat.com>
+Workflow+1: Ihar Hrachyshka <ihrachys@redhat.com>
+Code-Review+1: vikram.choudhary <vikram.choudhary@huawei.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Fri, 04 Mar 2016 12:11:00 +0000
+Reviewed-on: https://review.openstack.org/288375
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

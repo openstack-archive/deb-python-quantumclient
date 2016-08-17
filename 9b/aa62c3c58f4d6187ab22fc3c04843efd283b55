@@ -1,0 +1,17 @@
+Code-Review+1: Kenji Yasui <k-yasui@ti.jp.nec.com>
+Code-Review+1: shravya Gaddam <shravya.g90@gmail.com>
+Code-Review+1: Richard Theis <rtheis@us.ibm.com>
+Code-Review+1: Sergey Belous <sbelous@mirantis.com>
+Code-Review+1: Petri Kemppainen <petri.kemppainen@nokia.com>
+Code-Review+1: vikram.choudhary <vikram.choudhary@huawei.com>
+Code-Review+1: Ramanjaneya Reddy Palleti <ramanjaneya.palleti@huawei.com>
+Code-Review+2: Akihiro Motoki <amotoki@gmail.com>
+Code-Review+1: melissaml <ma.lei@99cloud.net>
+Code-Review+2: Rossella Sblendido <rsblendido@suse.com>
+Workflow+1: Rossella Sblendido <rsblendido@suse.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Mon, 14 Dec 2015 12:31:40 +0000
+Reviewed-on: https://review.openstack.org/243979
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

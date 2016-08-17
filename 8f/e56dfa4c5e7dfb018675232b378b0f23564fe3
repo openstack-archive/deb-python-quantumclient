@@ -1,0 +1,14 @@
+Code-Review+1: Richard Theis <rtheis@us.ibm.com>
+Code-Review+1: John Davidge <john.davidge@rackspace.com>
+Code-Review+1: Darek Smigiel <smigiel.dariusz@gmail.com>
+Code-Review+2: Carl Baldwin <carl@ecbaldwin.net>
+Code-Review+1: Brian Stajkowski <brian.stajkowski@rackspace.com>
+Code-Review+1: Reedip <reedip.banerjee@nectechnologies.in>
+Code-Review+2: Brian Haley <brian.haley@hpe.com>
+Workflow+1: Brian Haley <brian.haley@hpe.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Wed, 27 Jul 2016 20:50:46 +0000
+Reviewed-on: https://review.openstack.org/315573
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

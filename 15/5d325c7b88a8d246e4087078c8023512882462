@@ -1,0 +1,10 @@
+Code-Review+2: Carl Baldwin <carl@ecbaldwin.net>
+Code-Review+1: Mohammad Banikazemi <mb@us.ibm.com>
+Code-Review+2: Maru Newby <marun@redhat.com>
+Workflow+1: Armando Migliaccio <armamig@gmail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Wed, 27 Aug 2014 03:00:40 +0000
+Reviewed-on: https://review.openstack.org/116060
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

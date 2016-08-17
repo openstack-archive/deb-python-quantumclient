@@ -1,0 +1,9 @@
+Code-Review+2: Kevin Benton <kevin@benton.pub>
+Code-Review+2: Miguel Angel Ajo <mangelajo@redhat.com>
+Workflow+1: Miguel Angel Ajo <mangelajo@redhat.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Thu, 20 Aug 2015 08:38:34 +0000
+Reviewed-on: https://review.openstack.org/214945
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

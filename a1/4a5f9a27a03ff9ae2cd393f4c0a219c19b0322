@@ -1,0 +1,9 @@
+Code-Review+2: YAMAMOTO Takashi <yamamoto@midokura.com>
+Code-Review+2: Carl Baldwin <carl@ecbaldwin.net>
+Workflow+1: Carl Baldwin <carl@ecbaldwin.net>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Mon, 30 Nov 2015 18:45:20 +0000
+Reviewed-on: https://review.openstack.org/251077
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

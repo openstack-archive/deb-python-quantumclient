@@ -1,0 +1,18 @@
+Code-Review+1: Angus Lees <gus@inodes.org>
+Code-Review+1: Kevin Benton <kevin@benton.pub>
+Code-Review+1: Jacek Swiderski <jacek.swiderski@codilime.com>
+Code-Review+2: Akihiro Motoki <amotoki@gmail.com>
+Code-Review+1: Kevin Carter (cloudnull) <kevin.carter@rackspace.com>
+Code-Review+1: Miguel Grinberg <miguel.grinberg@gmail.com>
+Code-Review+1: Evan Callicoat <apsu@propter.net>
+Code-Review+1: David Wilde <david.wilde@rackspace.com>
+Code-Review+1: Ian Cordasco <ian.cordasco@rackspace.com>
+Code-Review+1: Darren Birkett <darren.birkett@gmail.com>
+Code-Review+2: Kyle Mestery <mestery@mestery.com>
+Workflow+1: Kyle Mestery <mestery@mestery.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Mon, 13 Oct 2014 21:41:46 +0000
+Reviewed-on: https://review.openstack.org/121047
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

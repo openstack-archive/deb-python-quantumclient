@@ -1,0 +1,10 @@
+Code-Review+2: Oleg Bondarev <obondarev@mirantis.com>
+Code-Review+1: Ann Taraday <akamyshnikova@mirantis.com>
+Code-Review+2: Kyle Mestery <mestery@mestery.com>
+Workflow+1: Kyle Mestery <mestery@mestery.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Mon, 01 Dec 2014 20:14:15 +0000
+Reviewed-on: https://review.openstack.org/131367
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

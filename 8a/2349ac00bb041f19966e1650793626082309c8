@@ -1,0 +1,10 @@
+Code-Review+1: Angus Lees <gus@inodes.org>
+Code-Review+2: mark mcclain <mark@mcclain.xyz>
+Code-Review+2: Kyle Mestery <mestery@mestery.com>
+Workflow+1: Kyle Mestery <mestery@mestery.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Thu, 10 Jul 2014 22:17:57 +0000
+Reviewed-on: https://review.openstack.org/62991
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

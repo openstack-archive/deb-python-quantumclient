@@ -1,0 +1,10 @@
+Code-Review+2: Assaf Muller <amuller@redhat.com>
+Code-Review+2: Ihar Hrachyshka <ihrachys@redhat.com>
+Code-Review+1: Paul Michali <pc@michali.net>
+Workflow+1: Assaf Muller <amuller@redhat.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Wed, 12 Aug 2015 17:53:40 +0000
+Reviewed-on: https://review.openstack.org/212049
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

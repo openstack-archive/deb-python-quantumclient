@@ -1,0 +1,13 @@
+Code-Review+1: Doug Wiegley <dougwig@parkside.io>
+Code-Review+1: John Schwarz <jschwarz@redhat.com>
+Code-Review+1: enikanorov <enikanorov@mirantis.com>
+Code-Review+1: Ronak Shah <ronak.malav.shah@gmail.com>
+Code-Review+2: Salvatore Orlando <salv.orlando@gmail.com>
+Code-Review+2: Akihiro Motoki <amotoki@gmail.com>
+Workflow+1: Akihiro Motoki <amotoki@gmail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Thu, 21 Aug 2014 02:37:03 +0000
+Reviewed-on: https://review.openstack.org/115109
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

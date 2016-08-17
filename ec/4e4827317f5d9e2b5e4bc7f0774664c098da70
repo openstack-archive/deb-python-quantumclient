@@ -1,0 +1,8 @@
+Code-Review+2: Henry Gessau <HenryG@gessau.net>
+Workflow+1: Henry Gessau <HenryG@gessau.net>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Sat, 12 Dec 2015 23:25:04 +0000
+Reviewed-on: https://review.openstack.org/252802
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

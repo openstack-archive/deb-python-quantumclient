@@ -1,0 +1,16 @@
+Code-Review+1: Al Miller <al.miller@ajmiller.net>
+Code-Review+1: James Arendt <james.arendt@hpe.com>
+Code-Review+1: Nate Johnston <openstacknate@gmail.com>
+Code-Review+2: Akihiro Motoki <amotoki@gmail.com>
+Code-Review+1: Ramanjaneya Reddy Palleti <ramanjaneya.palleti@huawei.com>
+Code-Review+1: xu chao <xu.chao@99cloud.net>
+Code-Review+1: Cedric Brandily <zzelle@gmail.com>
+Code-Review+1: vikram.choudhary <vikram.choudhary@huawei.com>
+Code-Review+2: Carl Baldwin <carl@ecbaldwin.net>
+Workflow+1: Carl Baldwin <carl@ecbaldwin.net>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Wed, 30 Sep 2015 23:43:58 +0000
+Reviewed-on: https://review.openstack.org/219455
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

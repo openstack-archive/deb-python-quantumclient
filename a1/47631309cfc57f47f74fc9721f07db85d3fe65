@@ -1,0 +1,15 @@
+Code-Review+2: Akihiro Motoki <amotoki@gmail.com>
+Code-Review+1: Brandon Palm <bapalm@us.ibm.com>
+Code-Review+1: Thomas Morin <tmmorin.orange@gmail.com>
+Code-Review+1: Martin Hickey <martin.hickey@ie.ibm.com>
+Code-Review+2: Carl Baldwin <carl@ecbaldwin.net>
+Code-Review+1: vikram.choudhary <vikram.choudhary@huawei.com>
+Code-Review+1: Nikolas Hermanns <nikolas.hermanns@ericsson.com>
+Code-Review+1: Reedip <reedip.banerjee@nectechnologies.in>
+Workflow+1: Akihiro Motoki <amotoki@gmail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Mon, 29 Feb 2016 16:38:27 +0000
+Reviewed-on: https://review.openstack.org/279459
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

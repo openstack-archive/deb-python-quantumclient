@@ -1,0 +1,13 @@
+Code-Review+1: enikanorov <enikanorov@mirantis.com>
+Code-Review+1: Elena Ezhova <eezhova@mirantis.com>
+Code-Review+1: John Kasperski <jckasper@linux.vnet.ibm.com>
+Code-Review-1: Itzik Brown <itzikb@redhat.com>
+Code-Review+2: Kyle Mestery <mestery@mestery.com>
+Code-Review+2: Akihiro Motoki <amotoki@gmail.com>
+Workflow+1: Akihiro Motoki <amotoki@gmail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Tue, 18 Nov 2014 05:37:42 +0000
+Reviewed-on: https://review.openstack.org/133115
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

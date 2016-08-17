@@ -1,0 +1,9 @@
+Code-Review+2: Doug Wiegley <dougwig@parkside.io>
+Code-Review+2: Kyle Mestery <mestery@mestery.com>
+Workflow+1: Kyle Mestery <mestery@mestery.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Wed, 04 Feb 2015 23:09:47 +0000
+Reviewed-on: https://review.openstack.org/111475
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

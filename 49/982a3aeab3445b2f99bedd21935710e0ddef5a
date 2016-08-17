@@ -1,0 +1,9 @@
+Code-Review+2: Akihiro Motoki <amotoki@gmail.com>
+Code-Review+2: gongysh <gong.yongsheng@99cloud.net>
+Workflow+1: gongysh <gong.yongsheng@99cloud.net>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Fri, 01 Mar 2013 20:38:05 +0000
+Reviewed-on: https://review.openstack.org/19926
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

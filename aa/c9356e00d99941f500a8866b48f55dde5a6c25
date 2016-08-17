@@ -1,0 +1,13 @@
+Code-Review+1: vikram.choudhary <vikram.choudhary@huawei.com>
+Code-Review+1: Reedip <reedip.banerjee@nectechnologies.in>
+Code-Review+1: Clint Adams <clint@gcfm.net>
+Code-Review+2: Doug Wiegley <dougwig@parkside.io>
+Code-Review+1: melissaml <ma.lei@99cloud.net>
+Code-Review+2: Rossella Sblendido <rsblendido@suse.com>
+Workflow+1: Rossella Sblendido <rsblendido@suse.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Wed, 13 Jan 2016 12:02:27 +0000
+Reviewed-on: https://review.openstack.org/266172
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

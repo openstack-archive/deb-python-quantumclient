@@ -1,0 +1,11 @@
+Code-Review+1: Nicolas PLANEL <nicolas.planel@enovance.com>
+Code-Review+1: Takashi NATSUME <natsume.takashi@lab.ntt.co.jp>
+Code-Review+2: Akihiro Motoki <amotoki@gmail.com>
+Code-Review+2: Kyle Mestery <mestery@mestery.com>
+Workflow+1: Kyle Mestery <mestery@mestery.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Tue, 24 Feb 2015 23:52:24 +0000
+Reviewed-on: https://review.openstack.org/157525
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

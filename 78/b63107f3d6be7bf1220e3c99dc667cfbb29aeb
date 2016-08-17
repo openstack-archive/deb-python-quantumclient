@@ -1,0 +1,12 @@
+Code-Review+2: Akihiro Motoki <amotoki@gmail.com>
+Code-Review+1: YAMAMOTO Takashi <yamamoto@midokura.com>
+Code-Review+1: Sumit Naiksatam <sumitnaiksatam@gmail.com>
+Code-Review+1: Elena Ezhova <eezhova@mirantis.com>
+Code-Review+2: Doug Wiegley <dougwig@parkside.io>
+Workflow+1: Doug Wiegley <dougwig@parkside.io>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Wed, 04 Feb 2015 18:18:41 +0000
+Reviewed-on: https://review.openstack.org/78577
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

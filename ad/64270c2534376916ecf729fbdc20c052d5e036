@@ -1,0 +1,9 @@
+Code-Review+2: Akihiro Motoki <amotoki@gmail.com>
+Code-Review+2: Nachi Ueno <nati.ueno@gmail.com>
+Workflow+1: Nachi Ueno <nati.ueno@gmail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Fri, 29 Nov 2013 10:41:42 +0000
+Reviewed-on: https://review.openstack.org/54529
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

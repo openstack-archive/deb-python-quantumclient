@@ -1,0 +1,10 @@
+Code-Review+2: Kevin Benton <kevin@benton.pub>
+Code-Review+1: Liping Mao <limao@cisco.com>
+Code-Review+2: Kyle Mestery <mestery@mestery.com>
+Workflow+1: Kyle Mestery <mestery@mestery.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Tue, 13 Jan 2015 04:15:00 +0000
+Reviewed-on: https://review.openstack.org/96372
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

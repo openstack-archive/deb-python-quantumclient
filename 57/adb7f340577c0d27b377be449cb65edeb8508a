@@ -1,0 +1,9 @@
+Code-Review+2: Akihiro Motoki <amotoki@gmail.com>
+Code-Review+2: Oleg Bondarev <obondarev@mirantis.com>
+Workflow+1: Oleg Bondarev <obondarev@mirantis.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Wed, 11 Feb 2015 16:51:27 +0000
+Reviewed-on: https://review.openstack.org/146863
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

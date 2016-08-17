@@ -1,0 +1,13 @@
+Code-Review+1: Richard Theis <rtheis@us.ibm.com>
+Code-Review+1: vikram.choudhary <vikram.choudhary@huawei.com>
+Code-Review+2: Akihiro Motoki <amotoki@gmail.com>
+Code-Review+1: YAMAMOTO Takashi <yamamoto@midokura.com>
+Code-Review+1: Cedric Brandily <zzelle@gmail.com>
+Code-Review+2: Rossella Sblendido <rsblendido@suse.com>
+Workflow+1: Rossella Sblendido <rsblendido@suse.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Tue, 26 Jan 2016 10:32:00 +0000
+Reviewed-on: https://review.openstack.org/271124
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

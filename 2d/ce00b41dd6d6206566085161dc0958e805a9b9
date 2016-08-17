@@ -1,0 +1,9 @@
+Code-Review+2: Henry Gessau <HenryG@gessau.net>
+Code-Review+2: Akihiro Motoki <amotoki@gmail.com>
+Workflow+1: Akihiro Motoki <amotoki@gmail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Tue, 27 Jan 2015 18:00:48 +0000
+Reviewed-on: https://review.openstack.org/149486
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

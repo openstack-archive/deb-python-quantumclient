@@ -1,0 +1,11 @@
+Code-Review+1: vikram.choudhary <vikram.choudhary@huawei.com>
+Code-Review+1: YAMAMOTO Takashi <yamamoto@midokura.com>
+Code-Review+2: Ihar Hrachyshka <ihrachys@redhat.com>
+Code-Review+2: Doug Wiegley <dougwig@parkside.io>
+Workflow+1: Doug Wiegley <dougwig@parkside.io>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Sat, 11 Jun 2016 04:38:35 +0000
+Reviewed-on: https://review.openstack.org/321726
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

@@ -1,0 +1,9 @@
+Code-Review+2: gongysh <gong.yongsheng@99cloud.net>
+Code-Review+2: Aaron Rosen <aaronorosen@gmail.com>
+Workflow+1: Aaron Rosen <aaronorosen@gmail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Sun, 03 Mar 2013 21:04:12 +0000
+Reviewed-on: https://review.openstack.org/23073
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

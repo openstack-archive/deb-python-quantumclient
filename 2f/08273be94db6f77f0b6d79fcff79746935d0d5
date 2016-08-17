@@ -1,0 +1,10 @@
+Code-Review+2: Akihiro Motoki <amotoki@gmail.com>
+Workflow+1: Akihiro Motoki <amotoki@gmail.com>
+Code-Review+1: Reedip <reedip.banerjee@nectechnologies.in>
+Code-Review+1: vikram.choudhary <vikram.choudhary@huawei.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Tue, 19 Jan 2016 08:28:31 +0000
+Reviewed-on: https://review.openstack.org/268848
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

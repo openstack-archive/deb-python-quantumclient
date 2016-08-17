@@ -1,0 +1,9 @@
+Code-Review+2: Kevin Benton <kevin@benton.pub>
+Code-Review+2: Carl Baldwin <carl@ecbaldwin.net>
+Workflow+1: Carl Baldwin <carl@ecbaldwin.net>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Wed, 18 Nov 2015 17:27:36 +0000
+Reviewed-on: https://review.openstack.org/245996
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

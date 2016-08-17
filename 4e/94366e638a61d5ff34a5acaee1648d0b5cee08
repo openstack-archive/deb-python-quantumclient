@@ -1,0 +1,9 @@
+Code-Review+2: Doug Wiegley <dougwig@parkside.io>
+Code-Review+2: Armando Migliaccio <armamig@gmail.com>
+Workflow+1: Armando Migliaccio <armamig@gmail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Fri, 02 Oct 2015 21:03:55 +0000
+Reviewed-on: https://review.openstack.org/230582
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

@@ -1,0 +1,9 @@
+Code-Review+2: mark mcclain <mark@mcclain.xyz>
+Code-Review+2: Akihiro Motoki <amotoki@gmail.com>
+Workflow+1: Akihiro Motoki <amotoki@gmail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Tue, 17 Sep 2013 13:29:26 +0000
+Reviewed-on: https://review.openstack.org/33611
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

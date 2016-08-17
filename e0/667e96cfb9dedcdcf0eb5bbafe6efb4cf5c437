@@ -1,0 +1,10 @@
+Code-Review+2: Brian Haley <brian.haley@hpe.com>
+Code-Review+1: vikram.choudhary <vikram.choudhary@huawei.com>
+Code-Review+2: Akihiro Motoki <amotoki@gmail.com>
+Workflow+1: Brian Haley <brian.haley@hpe.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Tue, 01 Mar 2016 16:06:52 +0000
+Reviewed-on: https://review.openstack.org/282583
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

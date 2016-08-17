@@ -1,0 +1,13 @@
+Code-Review+1: Richard Theis <rtheis@us.ibm.com>
+Code-Review+1: vikram.choudhary <vikram.choudhary@huawei.com>
+Code-Review+1: Reedip <reedip.banerjee@nectechnologies.in>
+Code-Review+1: James Reeves <james.reeves5546@gmail.com>
+Code-Review+2: Henry Gessau <HenryG@gessau.net>
+Code-Review+2: Carl Baldwin <carl@ecbaldwin.net>
+Workflow+1: Carl Baldwin <carl@ecbaldwin.net>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Mon, 29 Feb 2016 19:06:34 +0000
+Reviewed-on: https://review.openstack.org/253878
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

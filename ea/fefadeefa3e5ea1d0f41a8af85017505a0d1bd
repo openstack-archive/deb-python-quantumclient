@@ -1,0 +1,10 @@
+Code-Review+1: vikram.choudhary <vikram.choudhary@huawei.com>
+Code-Review+2: Kevin Benton <kevin@benton.pub>
+Code-Review+2: Carl Baldwin <carl@ecbaldwin.net>
+Workflow+1: Carl Baldwin <carl@ecbaldwin.net>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Tue, 16 Feb 2016 17:38:39 +0000
+Reviewed-on: https://review.openstack.org/234518
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

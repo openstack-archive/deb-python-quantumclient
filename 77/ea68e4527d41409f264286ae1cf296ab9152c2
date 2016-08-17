@@ -1,0 +1,9 @@
+Code-Review+2: Akihiro Motoki <amotoki@gmail.com>
+Code-Review+2: Salvatore Orlando <salv.orlando@gmail.com>
+Workflow+1: Salvatore Orlando <salv.orlando@gmail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Tue, 05 Mar 2013 22:04:32 +0000
+Reviewed-on: https://review.openstack.org/23450
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

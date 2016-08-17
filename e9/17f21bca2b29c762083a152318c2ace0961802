@@ -1,0 +1,13 @@
+Code-Review+1: bailin.zhang <zhang.bailin@zte.com.cn>
+Code-Review+1: qinchunhua <qin.chunhua@zte.com.cn>
+Code-Review+1: Yatin Kumbhare <yatinkumbhare@gmail.com>
+Code-Review+1: Trevor McCasland <TM2086@att.com>
+Code-Review+2: Akihiro Motoki <amotoki@gmail.com>
+Code-Review+2: Carl Baldwin <carl@ecbaldwin.net>
+Workflow+1: Carl Baldwin <carl@ecbaldwin.net>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Thu, 30 Jun 2016 17:13:44 +0000
+Reviewed-on: https://review.openstack.org/330933
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

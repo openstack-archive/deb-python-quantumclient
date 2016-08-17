@@ -1,0 +1,9 @@
+Code-Review+2: Henry Gessau <HenryG@gessau.net>
+Code-Review+2: Carl Baldwin <carl@ecbaldwin.net>
+Workflow+1: Carl Baldwin <carl@ecbaldwin.net>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Mon, 02 May 2016 23:42:55 +0000
+Reviewed-on: https://review.openstack.org/311551
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

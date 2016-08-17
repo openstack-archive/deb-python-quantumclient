@@ -1,0 +1,10 @@
+Code-Review+1: Jakub Libosvar <libosvar@redhat.com>
+Code-Review+2: Akihiro Motoki <amotoki@gmail.com>
+Code-Review+2: Maru Newby <marun@redhat.com>
+Workflow+1: Maru Newby <marun@redhat.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Thu, 28 Nov 2013 14:54:11 +0000
+Reviewed-on: https://review.openstack.org/55826
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

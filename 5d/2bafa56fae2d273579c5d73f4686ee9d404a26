@@ -1,0 +1,10 @@
+Code-Review+2: Kyle Mestery <mestery@mestery.com>
+Code-Review+2: Aaron Rosen <aaronorosen@gmail.com>
+Workflow+1: Aaron Rosen <aaronorosen@gmail.com>
+Code-Review+1: Cedric Brandily <zzelle@gmail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Thu, 27 Nov 2014 11:45:17 +0000
+Reviewed-on: https://review.openstack.org/99929
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

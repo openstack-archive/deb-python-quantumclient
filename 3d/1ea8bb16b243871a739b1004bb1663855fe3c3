@@ -1,0 +1,10 @@
+Code-Review+2: Miguel Angel Ajo <mangelajo@redhat.com>
+Code-Review+2: Akihiro Motoki <amotoki@gmail.com>
+Workflow+1: Akihiro Motoki <amotoki@gmail.com>
+Code-Review+2: Ihar Hrachyshka <ihrachys@redhat.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Fri, 04 Mar 2016 11:57:05 +0000
+Reviewed-on: https://review.openstack.org/288301
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

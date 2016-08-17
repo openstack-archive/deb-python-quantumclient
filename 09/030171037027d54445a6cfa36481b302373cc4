@@ -1,0 +1,11 @@
+Code-Review+2: Akihiro Motoki <amotoki@gmail.com>
+Code-Review+1: Bo Chi <bochi@tethrnet.com>
+Code-Review+2: Carl Baldwin <carl@ecbaldwin.net>
+Workflow+1: Carl Baldwin <carl@ecbaldwin.net>
+Code-Review+1: Mohankumar <nmohankumar1011@gmail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Wed, 20 Jan 2016 16:13:04 +0000
+Reviewed-on: https://review.openstack.org/264645
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

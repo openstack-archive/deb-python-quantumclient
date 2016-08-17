@@ -1,0 +1,10 @@
+Code-Review+2: Carl Baldwin <carl@ecbaldwin.net>
+Code-Review+1: Brian Haley <brian.haley@hpe.com>
+Code-Review+2: Kevin Benton <kevin@benton.pub>
+Workflow+1: Kevin Benton <kevin@benton.pub>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Tue, 12 May 2015 00:42:14 +0000
+Reviewed-on: https://review.openstack.org/181682
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

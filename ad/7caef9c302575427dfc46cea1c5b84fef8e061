@@ -1,0 +1,10 @@
+Code-Review+1: Oleg Bondarev <obondarev@mirantis.com>
+Code-Review+2: garyk <gkotton@vmware.com>
+Code-Review+2: Salvatore Orlando <salv.orlando@gmail.com>
+Workflow+1: Salvatore Orlando <salv.orlando@gmail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Fri, 10 May 2013 10:29:04 +0000
+Reviewed-on: https://review.openstack.org/25705
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

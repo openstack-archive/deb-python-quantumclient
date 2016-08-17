@@ -1,0 +1,11 @@
+Code-Review+2: Kyle Mestery <mestery@mestery.com>
+Code-Review+1: Richard Theis <rtheis@us.ibm.com>
+Code-Review+1: James Arendt <james.arendt@hpe.com>
+Code-Review+2: Carl Baldwin <carl@ecbaldwin.net>
+Workflow+1: Carl Baldwin <carl@ecbaldwin.net>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Fri, 04 Dec 2015 21:23:54 +0000
+Reviewed-on: https://review.openstack.org/251080
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master

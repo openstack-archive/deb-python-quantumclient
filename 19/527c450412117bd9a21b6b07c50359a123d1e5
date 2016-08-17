@@ -1,0 +1,10 @@
+Code-Review+2: Kyle Mestery <mestery@mestery.com>
+Code-Review+1: Swaminathan Vasudevan <swaminathan.vasudevan@hpe.com>
+Code-Review+2: mark mcclain <mark@mcclain.xyz>
+Workflow+1: mark mcclain <mark@mcclain.xyz>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Tue, 16 Sep 2014 07:40:43 +0000
+Reviewed-on: https://review.openstack.org/121211
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/master
