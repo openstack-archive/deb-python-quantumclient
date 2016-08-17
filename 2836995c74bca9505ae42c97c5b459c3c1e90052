@@ -1,0 +1,8 @@
+Verified+1: Jenkins
+Code-Review+2: dan wendlandt <dan@nicira.com>
+Workflow+1: dan wendlandt <dan@nicira.com>
+Submitted-by: Jenkins
+Submitted-at: Tue, 03 Apr 2012 05:38:14 +0000
+Reviewed-on: https://review.openstack.org/6133
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/milestone-proposed

@@ -1,0 +1,8 @@
+Verified+1: Jenkins
+Code-Review+2: Thierry Carrez <thierry@openstack.org>
+Workflow+1: Thierry Carrez <thierry@openstack.org>
+Submitted-by: Jenkins
+Submitted-at: Mon, 19 Mar 2012 09:31:19 +0000
+Reviewed-on: https://review.openstack.org/5504
+Project: openstack/deb-python-quantumclient
+Branch: refs/heads/milestone-proposed
