@@ -26,8 +26,8 @@ Build-Depends-Indep: pep8,
  python-pyparsing,
 Standards-Version: 3.9.3
 Homepage: https://launchpad.net/python-quantumclient
-Vcs-Browser: https://anonscm.debian.org/cgit/openstack/python-quantumclient.git/
-Vcs-Git: https://anonscm.debian.org/git/openstack/python-quantumclient.git
+Vcs-Browser: https://git.openstack.org/cgit/openstack/deb-python-quantumclient?h=debian%2Fnewton
+Vcs-Git: https://git.openstack.org/openstack/deb-python-quantumclient -b debian/newton
 
 Package: python-quantumclient
 Architecture: all

@@ -3,6 +3,8 @@ python-quantumclient (1:3.0.a1-2) UNRELEASED; urgency=medium
   * Fixed homepage (https).
   * Fixed VCS URLs (https).
   * d/copyright: Changed source URL to https protocol
+  * d/s/options: extend-diff-ignore of .gitreview
+  * d/control: Using OpenStack's Gerrit as VCS URLs.
 
  -- Ondřej Nový <novy@ondrej.org>  Sun, 28 Feb 2016 15:48:06 +0100
 
