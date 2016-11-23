@@ -7,7 +7,7 @@ Uploaders: Julien Danjou <acid@debian.org>,
            Loic Dachary (OuoU) <loic@debian.org>,
            Mehdi Abaakouk <sileht@sileht.net>,
            Thomas Goirand <zigo@debian.org>
-Build-Depends: debhelper (>= 9),
+Build-Depends: debhelper (>= 10),
  python-all (>= 2.6.6-3~), openstack-pkg-tools
 Build-Depends-Indep: pep8,
  cliff-tablib,
