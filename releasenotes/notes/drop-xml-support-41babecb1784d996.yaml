@@ -1,5 +1,0 @@
----
-upgrade:
-  - XML request format support has been removed.
-deprecations:
-  - request-format option is deprecated.

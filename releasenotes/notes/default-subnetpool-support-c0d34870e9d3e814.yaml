@@ -1,9 +1,0 @@
----
-features:
-  - |
-    CLI support for default subnetpools.
-
-    * The ``subnetpool-list`` and ``subnetpool-show`` command output includes
-      the ``is_default`` field.
-    * The ``subnetpool-create`` and ``subnetpool-update`` commands include a
-      ``--is-default`` option.

@@ -1,3 +1,0 @@
----
-features:
-  - Neutron client returns 'x-openstack-request-id'.
